@@ -1,0 +1,194 @@
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////          Backpack           ///////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+
+
+procedure SettingUPBackPackSlots;
+begin
+  RuniqueBackPackSlots:= RuniqueBackPack.split(45,36);
+  RuniqueSlot[1] := RuniqueBackPackSlots[0];
+RuniqueSlot[2] := RuniqueBackPackSlots[1];
+RuniqueSlot[3] := RuniqueBackPackSlots[2];
+RuniqueSlot[4] := RuniqueBackPackSlots[3];
+RuniqueSlot[5] := RuniqueBackPackSlots[4];
+RuniqueSlot[6] := RuniqueBackPackSlots[5];
+RuniqueSlot[7] := RuniqueBackPackSlots[6];
+RuniqueSlot[8] := RuniqueBackPackSlots[7];
+RuniqueSlot[9] := RuniqueBackPackSlots[8];
+RuniqueSlot[10] := RuniqueBackPackSlots[9];
+RuniqueSlot[11] := RuniqueBackPackSlots[10];
+RuniqueSlot[12] := RuniqueBackPackSlots[11];
+RuniqueSlot[13] := RuniqueBackPackSlots[12];
+RuniqueSlot[14] := RuniqueBackPackSlots[13];
+RuniqueSlot[15] := RuniqueBackPackSlots[14];
+RuniqueSlot[16] := RuniqueBackPackSlots[15];
+RuniqueSlot[17] := RuniqueBackPackSlots[16];
+RuniqueSlot[18] := RuniqueBackPackSlots[17];
+RuniqueSlot[19] := RuniqueBackPackSlots[18];
+RuniqueSlot[20] := RuniqueBackPackSlots[19];
+RuniqueSlot[21] := RuniqueBackPackSlots[20];
+RuniqueSlot[22] := RuniqueBackPackSlots[21];
+RuniqueSlot[23] := RuniqueBackPackSlots[22];
+RuniqueSlot[24] := RuniqueBackPackSlots[23];
+RuniqueSlot[25] := RuniqueBackPackSlots[24];
+RuniqueSlot[26] := RuniqueBackPackSlots[25];
+RuniqueSlot[27] := RuniqueBackPackSlots[26];
+RuniqueSlot[28] := RuniqueBackPackSlots[27];
+
+end;
+
+
+function ItemActivate:boolean;
+begin
+    if findColorSpiral(x, y, 16777215, RuniqueBackPack)  then
+    begin
+    writeln('Clicked item');
+    result:= true;
+    end;
+end;
+
+
+Function  IsItemInSlot(slotnum:integer):boolean;   //finds black outline of items.
+begin
+
+ if findColorSpiral(x, y, 65536, RuniqueSlot[slotnum])   then
+    result := true;
+
+end;
+
+procedure UseItemOnItem(Backpackslot,Backpackslottwo,waittime:integer);
+begin
+ if  IsItemInSlot (Backpackslot) then
+ begin
+    mouse(RuniqueSlot[Backpackslot].getMiddle,MOUSE_RIGHT,MOUSE_ACCURATE);
+    RSPSChooseoption('Use');
+    wait(waittime);
+ end else
+ begin
+     writeln('Item not in slot ', tostr(Backpackslot));
+     TerminateScript;
+ end;
+  if  IsItemInSlot (Backpackslottwo) then
+ begin
+      mouse(RuniqueSlot[Backpackslottwo].getMiddle,MOUSE_LEFT,MOUSE_ACCURATE);
+      wait(waittime);
+ end else
+ begin
+     writeln('Item not in slot ', tostr(Backpackslottwo));
+     TerminateScript;
+ end;
+end;
+
+
+function CountItemsInInvo:integer;
+var
+i: integer;
+begin
+ i:= 1;
+ TotalItems:= 0;
+ repeat
+ if IsItemInSlot(i)  = true then  inc(TotalItems);
+ inc(i);
+ until(i = 29);
+ Result:= TotalItems;
+ writeln('total items in invo ',TotalItems);
+
+end;
+
+
+function RuniqueBagFull: boolean;
+begin
+   if CountItemsInInvo = 28 then
+   result:= true;
+end;
+
+function RuniqueBagEmpty: boolean;
+begin
+   if CountItemsInInvo = 0 then
+   result:= true;
+end;
+
+function BitmapinSlot(slotnum,bmps,tol:integer):boolean;
+
+begin
+if findBitmapToleranceIn(bmps, x, y, RuniqueSlot[slotnum], tol) then
+result:= true;
+end;
+
+Function  CountBitmapsInInvo(btm,tol:integer):integer;
+var
+i:integer;
+begin
+ i:= 1;
+ Totalbtms:= 0;
+ repeat
+ if BitmapinSlot(i,btm,tol)  = true then  inc(Totalbtms);
+ inc(i);
+ until(i = 29);
+ writeln(tostr(Totalbtms));
+ result:= Totalbtms;
+
+end;
+
+procedure WaitBackPackChange(btms,tol,repeats,Waittime,BtmsLeft:integer);
+var
+i,p,StartItems,AdjustedStartItems,EndItems:integer
+begin
+P:=1;
+ repeat
+ StartItems:=CountBitmapsInInvo(btms,tol);
+ i:= 1;
+    repeat
+      EndItems:= CountBitmapsInInvo(btms,tol);
+      wait(Waittime);
+      inc(i);
+     if (CountBitmapsInInvo(btms,tol) = BtmsLeft) then exit;
+     if  InCombat(true) then
+       begin
+       findswbank(false,0,true);
+       exit;
+       end;
+     until(i = repeats);
+     writeln('Start items ',StartItems,' end items ',EndItems);
+         if  StartItems = EndItems then
+            begin
+              inc(p);
+              writeln('Bag Action Stoped rechecking');
+                    if p >= 3 then
+                    begin
+                    writeln('Dced While doing bag action');
+                    terminatescript;
+                    end;
+            end;
+ until((CountBitmapsInInvo(btms,tol) = BtmsLeft));  //add sadwich laddy latter.
+end
+
+
+function IsSlotActive(slotnum:integer):boolean;
+begin
+ if findColorSpiral(x, y, 16777215, RuniqueSlot[slotnum])  then
+ result := true;
+
+end;
+
+procedure ShiftDrop(firstslot,lastslot:integer; tol:integer = 120);
+var
+Droprange:tbox;
+begin
+  Droprange:= intToBox(523, 252,768, 550);  //fix for bottom row of items
+  KeyDown(16);//hold shift key
+  mouse(RuniqueSlot[firstslot].getMiddle,MOUSE_LEFT,MOUSE_ACCURATE);
+  mouse(RuniqueSlot[lastslot].getMiddle,MOUSE_LEFT,MOUSE_ACCURATE);
+  KeyUp(16); // releas shift key
+  wait(500);
+  mouse(RuniqueSlot[lastslot].getMiddle,MOUSE_RIGHT,MOUSE_ACCURATE);
+  wait(200);
+  RSPSChooseOption('Drop');
+  wait(1000);//wait for the items to hit floor
+end;
+
+

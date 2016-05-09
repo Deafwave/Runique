@@ -1,0 +1,35 @@
+Function SummoningOptionOpen:boolean;
+var
+Tpa: TPointArray;
+begin
+ if FindColorsTolerance(Tpa, 9409835, Runiquechatbox, 6, colorSetting(2, 0.09, 2.15)) then
+ result:= true;
+
+end;
+
+procedure OpenSummoningShop(option:integer = 2);
+var
+Shopbox,Optionbox:tbox;
+x,y:integer;
+OptionBoxes:TboxArray;
+begin
+   Shopbox:=  intToBox(255, 176,267, 187);  //minor fix
+   OptionBox:= intToBox(182, 432,349, 489);
+   OptionBoxes:= OptionBox.split(OptionBox.getWidth,round(OptionBox.getHeight/2));
+   wait(300+Randomrange(750,1200)); //lagg protec for right menu.
+   ClickShop(Shopbox);
+   //RightClickTpa(intToBox(251, 156,271, 170),9151138,1,0,0,0.73,0.65);//
+  // RSPSChooseOption('Trade');
+   WaitFunc(@SummoningOptionOpen,600,3000);
+       if option = 1 then   //for which supplies
+       begin
+          mouse( OptionBoxes[0].getmiddle,MOUSE_LEFT,MOUSE_ACCURATE);
+
+       end else
+       begin
+          mouse( OptionBoxes[1].getmiddle,MOUSE_LEFT,MOUSE_ACCURATE);
+       end;
+   WaitFunc(@ShopIsOpen,1000,5000);
+   if not ShopIsOpen then begin  writeln('Error Couldnt open shop'); terminatescript; end;
+
+end;

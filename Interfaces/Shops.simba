@@ -1,0 +1,61 @@
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////          Shops          ///////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+
+function DidfindInterfaceTxt:boolean;
+var
+Textbox:tbox;
+begin
+    Textbox:= intToBox(188, 64,319, 80);
+    if Textbox.colorExists(4231423) then
+    result:= true;
+end;
+
+Function ShopIsOpen:boolean;
+begin
+waitfunc(@DidfindInterfaceTxt,150,6000);
+  if  not DidfindInterfaceTxt then
+      begin writeln('Unable to open smith');
+      terminatescript;
+      end;
+    writeln('Shop/interface is open');
+    result:= true;
+end;
+
+procedure ClickShop(shopbox:tbox);
+begin
+     wait(250+randomrange(450,800));
+     mouseBox(shopbox,MOUSE_RIGHT);
+     wait(150);
+     RSPSchooseoption('Trade');
+end;
+
+
+procedure closeshop;
+begin
+  mouse( point(495, 71),MOUSE_LEFT,MOUSE_ACCURATE);
+  wait(randomrange(300,700));
+end;
+
+
+procedure buyitem(Shopboxnumber:integer);
+begin
+ RuniqueShop:= intTobox (33, 105, 494, 326);
+ RuniqueShopBoxes:=RuniqueShop.split(round(RuniqueShop.getWidth()/9)+1,round(RuniqueShop.getHeight()/4));
+ waitfunc(@ShopIsOpen,100,2000);
+ if ShopIsOpen then
+ begin
+ wait(300);
+ mouse( RuniqueShopBoxes[Shopboxnumber-1].getmiddle(),MOUSE_RIGHT,MOUSE_ACCURATE);
+ RSPSChooseOption('Buy 100');
+ wait(300);
+ closeshop;
+ end;
+end;
+
+
+

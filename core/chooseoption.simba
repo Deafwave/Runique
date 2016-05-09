@@ -1,0 +1,95 @@
+const
+fullclient:= getClientBounds();
+var
+OptionCorrectNotCorrect:boolean;
+p:integer;
+
+Function IsChooseOptionopen:boolean;
+begin
+if findColorSpiral(x, y, 9812166, fullclient) then
+result:= true;
+end;
+
+Function IsChatOptionOpen:boolean;
+var
+tpa:tpointarray;
+begin
+if FindColorsTolerance(Tpa, 8488741, Runiquechatbox,10, colorSetting(2,0.05, 1.50)) then
+result:= true;
+end;
+
+Function OptionExists(option:string): tbox;
+var
+Tpa: TPointArray;
+Atpa: T2DPointArray;
+i,textcolor:integer;
+bounds,Screen:tbox;
+rspsOption:tboxArray;
+begin
+if waitfunc(@IsChooseOptionopen,300,3000) then
+    begin
+        textcolor:= 9812166;
+        if FindColorsTolerance(Tpa, textcolor, fullclient,3, colorSetting(2,0, 0)) then
+        begin
+        bounds := getTPABounds(Tpa);
+        rspsOption:= bounds.split(bounds.getWidth,15);
+        for i:= Low(rspsOption) to  High(rspsOption) do
+        begin
+         if StringMatch(getTextAtEx(rspsOption[i], 0,5,3,textcolor, 0, 'Upchars07') , option)  > 0.84 then
+           begin
+             result:= rspsOption[i];
+             OptionCorrectNotCorrect:= false;
+             exit;
+           end;
+         end;
+          writeln('opton not found');
+          inc(p);
+          OptionCorrectNotCorrect:= true;
+        end;
+end;
+end;
+
+
+
+Function RSPSChooseOption(option:string):boolean;
+var
+box:tbox;
+begin
+ box:=OptionExists(option);
+
+  if not OptionCorrectNotCorrect then
+    begin
+      mouse(box.getMiddle,MOUSE_LEFT,MOUSE_ACCURATE); //mouse middle of correct option.
+       P:= 0;
+      result:= true;
+    end else
+    begin
+        inc(p);
+        Writeln('Number of Failed Chooseoptions ', Tostr(p));
+       if p = 3 then  TerminateScript;   //will check max 3 times before ending script.
+       result:= false;
+    end;
+
+end
+
+procedure ChatboxChooseoption(option:string);
+begin
+      Waitfunc(@IsChatOptionOpen,300,3000);
+      if IsChatOptionOpen then
+        begin
+           mouse(Runiquechatbox.getmiddle,MOUSE_RIGHT,MOUSE_ACCURATE);
+           RSPSChooseOption(option);
+        end else
+        begin
+            writeln('Chatbox option didnt open');
+            terminatescript;
+        end;
+end;
+
+
+
+
+
+
+
+

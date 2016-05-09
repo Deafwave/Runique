@@ -1,0 +1,25 @@
+procedure FindStalls(whichstall:integer);
+var
+  StallTpa: TPointArray;
+  StallAtpa: T2DPointArray;
+  i:integer;
+begin
+  if FindColorsTolerance(StallTpa, 4227760, intToBox (4, 47, 524, 386), 0, colorSetting(2,0, 0)) then
+  begin
+    StallAtpa := ClusterTPA(StallTpa, 15);
+    for i:=0 to 3 do
+      begin
+      mouse(StallAtpa[whichstall].getbounds.getmiddle,MOUSE_RIGHT);
+      if RSPSChooseoption('Steal from') then break;
+      if i = 3 then
+        begin
+              writeln('option not found');
+              TerminateScript;
+        end;
+      end;
+  end else
+  begin
+    writeln('couldnt find tpa');
+    terminatescript;
+  end
+  end;

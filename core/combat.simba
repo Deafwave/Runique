@@ -1,0 +1,54 @@
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////          Combat          //////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+
+procedure heal;
+var
+  DocBox: tbox;
+  midpoint: tpoint;
+begin
+  DocBox := intTobox(81, 369, 128, 386);
+  midpoint := DocBox.getMiddle;
+  QuickChatArea(2,'ce',point(45, 464),point(154, 477));
+  wait(8000);
+  mouse(midpoint, MOUSE_RIGHT, MOUSE_ACCURATE);
+  RSPSChooseOption('Heal');
+  RuniqueWaitFlag;
+end;
+
+procedure escape();
+begin
+    SendCommand('::market');
+    wait(8000);
+    wait(1000);
+    heal;
+    wait(500);
+end;
+
+function IsHpFull:boolean;
+begin
+       if findBitmapToleranceIn(Maxhp, x, y, RuniqueMinimap, 15) then
+       begin
+       writeln('Your Hp is full.');
+       result:= true;
+       end;
+end;
+
+function InCombat(Run:boolean = true): boolean;
+var
+  Hpbox: tbox;
+begin
+  Hpbox := intToBox(694, 57,758, 99);
+  if not findColorSpiral(x, y, 65280,Hpbox) or not IsHpFull then
+    begin
+   if run then escape();
+    result := true;
+    end;
+end;
+
+
+

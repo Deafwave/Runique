@@ -1,0 +1,140 @@
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////          Banking           ////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+
+function BankIsOpen:boolean;
+begin
+
+if findBitmapToleranceIn(bankopen, x, y, Runiquemainscreen, 25) then //fix
+result:= true;
+
+end;
+
+function BankIsClosed:boolean;
+begin
+    if not findBitmapToleranceIn(bankopen, x, y, Runiquemainscreen, 10) then
+    result:= true;
+end;
+
+procedure Closebank;
+var
+i:integer;
+begin
+  if BankIsOpen then clickbitmap(bankclose, 25, Runiquemainscreen);
+  waitfunc(@BankIsClosed,300,1300);
+  if BankIsOpen then
+    begin
+    writeln('Attempted to many times to close bank,possible dc.');
+    TerminateScript;
+    end;
+end;
+
+procedure DepositAll;
+begin
+     if BankIsOpen then clickbitmap(bankdeposit, 25, Runiquemainscreen);
+end;
+
+procedure WithdrawItemsFromBank(Bankslot:integer = 1;MouseBtn:integer = MOUSE_LEFT);
+begin
+
+   case  MouseBtn of
+   MOUSE_LEFT:begin
+              if findColorSpiral(x, y, 65536, RuniqueBankScreenSlot[Bankslot-1])   then
+              begin
+              mouse(point(x,y),MOUSE_LEFT, MOUSE_ACCURATE);
+              wait(500);
+              end;
+              end;
+   MOUSE_RIGHT:begin
+              if findColorSpiral(x, y, 65536, RuniqueBankScreenSlot[Bankslot-1])   then
+              begin
+              mouse(point(x,y),MOUSE_RIGHT, MOUSE_ACCURATE);
+              RSPSChooseoption('Withdraw all but one');
+              wait(500);
+              end;
+              end;
+
+    end;
+end;
+
+procedure Commandbank(WithDrawItem:boolean = true; Bankslot:integer = 1);
+begin
+  SendCommand('::bank');
+  waitfunc(@BankIsOpen,300,3000);
+  if BankIsOpen then begin
+  DepositAll;
+  if WithDrawItem then
+    begin
+        WithdrawItemsFromBank();
+    end;
+  Closebank;
+  end else
+  begin
+   writeln('Bank failed to open');
+   terminatescript;
+  end;
+end;
+
+procedure findswbank(WithDrawItem:boolean = true; Bankslot:integer = 1;CloseBank:boolean = true);
+var
+  midpoint: tpoint;
+  x, y: integer;
+begin
+    if Closebank then
+    begin
+    QuickChatArea(2,'ms',point(45, 479),point(159, 476));
+    wait(7000);
+    end;
+  repeat
+  RightClickTpa(Runiquemainscreen, 9211288, 27, 50,0, 0.06, 0.07);
+  until( RSPSChooseoption('Use'));
+  waitfunc(@BankIsOpen,300,3000);
+  if BankIsOpen then
+  begin
+  if Closebank then DepositAll;
+  if WithDrawItem then
+    begin
+      WithdrawItemsFromBank();
+    end;
+  if CloseBank then Closebank;
+  end else
+  begin
+   writeln('Bank failed to open');
+   terminatescript;
+  end;
+
+end;
+
+procedure BankingTimer(MinsTobank:integer = 9);
+var
+  Timetilbank:integer;
+begin
+       inc(RunsTillBank);
+       Writeln('Banking mins set to ',MinsTobank,' banking in ',6 - RunsTillBank, ' Current run ',RunsTillBank);
+       if RunsTillBank >=  6 then
+       begin
+       if MinsTobank > 6 then
+       begin
+         findswbank;
+         openquickchat;
+         SendKeys('sgs', 250, 50);
+         wait(9000);
+         RunsTillBank:= 0;
+       end else
+       begin
+       Commandbank;
+       RunsTillBank:= 0;
+       end;
+       end;
+
+end;
+
+procedure DepositAllOfSingleItem(slot:integer);
+begin
+   mouse(RuniqueSlot[slot].getmiddle,MOUSE_RIGHT,MOUSE_ACCURATE);
+   RSPSChooseoption('Store All');
+end;

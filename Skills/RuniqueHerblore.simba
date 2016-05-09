@@ -1,0 +1,17 @@
+procedure CleanHerbs(lastherbslot,howmanyherby:integer);
+var
+i:Integer;
+begin
+  if  IsItemInSlot (lastherbslot) then
+ begin
+      for i:= 1 to howmanyherby do
+  begin
+  mouse(RuniqueSlot[lastherbslot].getMiddle,MOUSE_LEFT,MOUSE_ACCURATE);
+  wait(500);
+  end; //clean herbs
+ end else
+ begin
+     writeln('Not enough herbs');
+     TerminateScript;
+ end;
+end;

@@ -1,0 +1,50 @@
+
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////          BitmapsAndColors          ////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+
+function DidFindBitmap(bmps, tol: integer; area: tbox):boolean;
+begin
+  if findBitmapToleranceIn(bmps, x, y, Area, tol) then
+    result:= true;
+end;
+
+procedure clickbitmap(bmps, tol: integer; Area: tbox);
+begin
+if DidFindBitmap(bmps,tol,Area) then
+begin
+  if  findBitmapToleranceIn(bmps, x, y, Area, tol) then
+  begin
+    mouse(point(x, y), MOUSE_LEFT,MOUSE_ACCURATE);
+  end;
+  end else
+    begin
+       writeln('Cant find bitmap');
+       terminatescript;
+    end;
+end;
+
+
+procedure RightClickTpa(box: tbox; color, tol, cluster,picktpa:integer; hue, sat: Extended);
+var
+  Tpa: TPointArray;
+  Atpa: T2DPointArray;
+  Colorbox:Tbox;
+begin
+  if FindColorsTolerance(Tpa, color, box, tol, colorSetting(2, hue, sat)) then
+  begin
+    Atpa := ClusterTPA(Tpa, cluster);
+    SortAtpaSize(Atpa, True);
+    mouse(middletpa(Atpa[picktpa]),MOUSE_RIGHT);//fix
+  end
+  else
+  begin
+    writeln('couldnt find tpa');
+    terminatescript;
+  end;
+end;
+

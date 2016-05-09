@@ -1,0 +1,61 @@
+{$DEFINE Runique}
+//all from srl-6
+{$include_once utilities/wrappers.simba}
+{$include_once utilities/time.simba}
+{$include_once core/debug.simba}
+{$include_once core/globals.simba}
+{$include_once utilities/math.simba}
+{$include_once core/mouse.simba}
+{$include_once utilities/drawing.simba}
+{$include_once utilities/pixelshift.simba}
+{$include_once utilities/types/types.simba}
+{$include_once utilities/color.simba}
+//end srl-6
+{$include_once core/MainVarsAndConst.simba}
+{$include_once core/Client.simba}
+{$include_once core/Commands.simba}
+{$include_once core/chooseoption.simba}
+{$include_once images/Images.simba}
+{$include_once interfaces/QuickChat.simba}
+{$include_once interfaces/bank.simba}
+{$include_once interfaces/MiniMap.simba}
+{$include_once interfaces/Shops.simba}
+{$include_once core/combat.simba}
+{$include_once interfaces/Backpack.simba}
+{$include_once skills/RuniqueSmithing.simba}
+{$include_once skills/RuniqueSummoning.simba}
+{$include_once skills/RuniqueThieving.simba}
+{$include_once skills/RuniqueHerblore.simba}
+ 
+
+procedure Loadall;
+begin
+  Runiqueimages;
+  LoadSmithingImages;
+
+end;
+
+procedure freeAll;
+begin
+FreeRuniqueimages;
+FreeSmithingImages;
+
+end;
+procedure SetupRuniqueinclude();
+begin
+  MouseSpeed:= 30;
+  RuniqueBackPack:= intToBox(555, 260,731, 511);
+  RuniqueBankscreen:= intTobox(28, 123,468, 314);
+  Runiquechatbox := intToBox (6, 387, 518, 522);
+  RuniqueBankScreenSlot:= RuniqueBankscreen.split(round(RuniqueBankscreen.getWidth()/10),round(RuniqueBankscreen.getHeight()/4-9));
+  SettingUPBackPackSlots;
+  RuniqueSmithingInterface:= intToBox(29, 110,500, 359) ;
+  RuniqueSmithItemSlot:= RuniqueSmithingInterface.split(round(RuniqueSmithingInterface.getWidth()/5+1),round(RuniqueSmithingInterface.getHeight()/5)); ;
+  RunsTillBank:= 1;
+  Loadall;
+  addOnTerminate('freeAll');
+  WaitRSPSClientReady;
+end;
+
+
+

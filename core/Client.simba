@@ -1,0 +1,28 @@
+
+function RuniqueClientReady:boolean;
+const
+ RuniqueChatLine := intTobox (9,507,515,525);
+begin
+  Writeln(IntToStr(getPixelShiftAverage(RuniqueChatLine, 50, 500)));
+  if  getPixelShiftAverage(RuniqueChatLine, 50, 500) > 0 then result := true;
+
+end;
+
+procedure WaitRSPSClientReady;
+var
+min:integer;
+begin
+min:= 60000;
+ waitFunc(@RuniqueClientReady,1000,60000);
+  if  RuniqueClientReady then
+    begin
+    Writeln('Client Ready');//forgot comma
+    activateClient();
+    end else
+    begin
+      Writeln('Client Not Ready');
+      TerminateScript();//typing error
+    end;
+
+end;
+

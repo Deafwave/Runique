@@ -1,0 +1,82 @@
+program RuniqueCannonballer;
+{$i ../RuniqueInclude.simba}
+var
+ResetLimit,clientbitmap,MinutesToUseBankCammand,Trips:integer;
+ItemSlotShop,SmithSlotNum:integer;
+procedure freeimages;
+begin
+     freebitmap(clientbitmap);
+end;
+
+procedure main;forward;
+procedure reset;
+begin
+  if ResetLimit > 2 then
+  begin
+  writeln('to many resets');
+  terminatescript;
+  end;
+  inc(ResetLimit);
+  SendCommand('::market');
+  wait(5000);
+      if RuniqueBagFull then
+      begin
+       openquickchat;
+       QuickChatArea(3,'sgs',point(47, 487),point(262, 477),point(170, 416));
+       main;
+      end else
+          begin
+          findswbank;
+           QuickChatArea(3,'sgs',point(47, 487),point(262, 477),point(170, 416));
+          wait(500);
+          main;
+          end;
+end;
+procedure loadimages;
+begin
+        clientbitmap:=  bitmapFromClient(704, 271,714, 281);   //2nd slot
+end;
+
+Procedure Proggy(runs:integer);
+begin
+  clearDebug;
+  writeln('|---------------------------------------------------------|');
+  writeln('||================Runique Cannonballer ===================|');
+  writeln('           Time Running: '+ MsToTime(GetTimeRunning, 3),'||');
+  writeln('           Roughly Cannon Balls Made ' + inttostr(runs * 104 + 4));
+  writeln('||=======================================================||');
+  writeln('|---------------------------------------------------------|');
+End;
+
+Procedure  MakeCannonBalls;
+begin
+   if not RuniqueBagFull then
+  begin
+  OpenSummoningShop;
+  buyitem(ItemSlotShop);
+  end else
+  begin
+  QuickChatArea(3,'soe',point(47, 487),point(259, 466),point(149, 416));
+  SmithEdg(clientbitmap,SmithSlotNum);
+  WaitBackPackChange(clientbitmap,10,100,500,0);
+  inc(Trips);
+  Proggy(Trips);
+  QuickChatArea(3,'sgs',point(47, 487),point(262, 477),point(170, 416));
+  BankingTimer(MinutesToUseBankCammand);
+  end;
+end;
+procedure main;
+begin
+ repeat
+  MakeCannonBalls;
+ until(false);
+end;
+begin
+  SetupRuniqueinclude();
+  addOnTerminate('freeimages');
+  MinutesToUseBankCammand:= 9;
+  ItemSlotShop:= 12;
+  SmithSlotNum:=  15;
+  loadimages;
+  main;
+end;

@@ -1,0 +1,63 @@
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////          QuickChat           //////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+function IsQuickChatOpen:boolean;
+var
+ChatOpenColorBox:tbox;
+begin
+    ChatOpenColorBox:= intToBox(31, 389,108, 406);
+    if  ChatOpenColorBox.colorExists(8388608) then
+    result:= true;
+end;
+
+procedure openquickchat;
+begin
+  PressKey(13);
+  PressKey(13);
+  wait(300);
+  if not IsQuickChatOpen then
+  begin
+     mouse(point(504, 512),MOUSE_LEFT);
+     writeln('Fall back to manually opening quick chat');
+     wait(300);
+  end;
+end;
+
+
+procedure QuickChatArea(numbofkeys:integer;quickchatkeys:string;p1,p2:Tpoint; p3:Tpoint = point(0,0))
+begin
+  openquickchat;
+  sendkeys(quickchatkeys,150,50);
+  wait(500);
+  if IsQuickChatOpen then
+  begin
+    writeln('quick chat bugged fall back to manully clicking');
+  case numbofkeys of
+  2:begin
+     mouse(p1, MOUSE_LEFT,MOUSE_ACCURATE);
+     wait(300);
+     mouse(p2, MOUSE_LEFT,MOUSE_ACCURATE);
+     wait(300);
+    end;
+
+  3:begin
+     mouse(p1, MOUSE_LEFT,MOUSE_ACCURATE);
+     wait(300);
+     mouse(p2, MOUSE_LEFT,MOUSE_ACCURATE);
+     wait(300);
+     mouse(p3, MOUSE_LEFT,MOUSE_ACCURATE);
+     wait(300);
+
+    end;
+
+  end;
+
+  end;
+  wait(randomrange(6500,7500));
+end;
+
+

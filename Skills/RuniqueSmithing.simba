@@ -1,0 +1,84 @@
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////          Smithing          ////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+var
+UseAnvil:integer;
+
+function SmithingIsOpen:boolean;
+var
+Textbox:tbox;
+begin
+    Textbox:= intToBox(169, 79,357, 95);
+    if Textbox.colorExists(65535) then
+    begin
+    writeln('Smithing is open');
+    result:= true;
+    end;
+end;
+
+
+
+procedure SmithItem(SmithItemSlot:integer);
+begin
+WaitFunc(@SmithingIsOpen,150,3000);
+if  not SmithingIsOpen then
+    begin writeln('Unable to open smith');
+    terminatescript;
+    end;
+  wait(randomrange(300,600));
+  mouse(RuniqueSmithItemSlot[SmithItemSlot-1].getmiddle(),MOUSE_RIGHT,MOUSE_ACCURATE);
+  RSPSChooseOption('Make All');
+
+end;
+
+function FindBlueAnvilText:boolean;
+begin
+    if intToBox(4, 47, 524, 386).colorExists(16776960) then
+    result:= true;
+end;
+
+
+procedure SmithEdg(BarBtm,Item2Smith:integer);
+begin
+   clickbitmap(BarBtm,25,RuniqueBackPack);
+   waitfunc(@ItemActivate,300,3000);
+    if  not ItemActivate then
+    begin
+      writeln('Item not click due to lagg/dc');
+      TerminateScript;
+    end;
+   wait(300 + randomrange(100,400));
+   RightClickTpa( intToBox(252, 176,274, 193),5197909,4,0,0,0.70,0.15);//
+   waitfunc(@FindBlueAnvilText,300,2500);
+   if FindBlueAnvilText then begin
+   clickbitmap(UseAnvil,55,Runiquemainscreen);
+   end else
+   begin
+       writeln('Couldnt find anvil');
+       terminatescript;
+   end;
+   SmithItem(Item2Smith);
+end;
+
+procedure LoadSmithingImages;
+begin
+        UseAnvil := BitmapFromString(56, 6, 'meJy1ktENgCAMRLsK/ips6y5O4Fr' +
+        'YpOFytojGKOnH9WjhURWRvKR12zXKkkrT0hYcM7kSUatoYCHFlqUm' +
+        'XEtXq8jkqxbiZCrTkTzu8kV5ThpdBsfPT0BBObO95uzuOs7bWV1x+' +
+        'qP+5HzyTbnXDfM5Zyaw+Md+O8+x4zgR9iiX4oQrjWjmNK6PvexEEu' +
+        'gDBJku6A==');
+
+
+
+end;
+procedure FreeSmithingImages;
+begin
+    Freebitmap(UseAnvil);
+
+end;
+
+
