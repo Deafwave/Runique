@@ -40,7 +40,7 @@ begin
   begin
     Atpa := ClusterTPA(Tpa, cluster);
     SortAtpaSize(Atpa, True);
-    wait(1200 + randomrange(500,700));
+    wait(1400 + randomrange(500,700));
     mousebox(Atpa[picktpa].getBounds(),MOUSE_RIGHT);//fix
   end
   else
