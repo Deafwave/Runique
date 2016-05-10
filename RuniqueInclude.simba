@@ -1,6 +1,7 @@
 {$DEFINE Runique}
 
 
+
 //all from srl-6
 {$include_once utilities/wrappers.simba}
 {$include_once utilities/time.simba}
@@ -12,6 +13,7 @@
 {$include_once utilities/pixelshift.simba}
 {$include_once utilities/types/types.simba}
 {$include_once utilities/color.simba}
+// {$i ../ETL_Lape.simba}  //remove
 //end srl-6
 var
  ScriptTimer: TTimeMarker;
@@ -31,7 +33,6 @@ var
 {$include_once skills/RuniqueThieving.simba}
 {$include_once skills/RuniqueHerblore.simba}
 
-
 procedure Loadall;
 begin
   Runiqueimages;
@@ -47,6 +48,7 @@ FreeSmithingImages;
 end;
 procedure SetupRuniqueinclude();
 begin
+  //ETL_Start();//delete
   MouseSpeed:= 30;
   RuniqueBackPack:= intToBox(555, 260,731, 511);
   RuniqueBankscreen:= intTobox(28, 123,468, 314);

@@ -1,10 +1,14 @@
 
 function RuniqueClientReady:boolean;
-const
- RuniqueChatLine := intTobox (9,507,515,525);
+var
+ RuniqueChatLine:TboxArray;
+ FullClient:tbox;
 begin
-  Writeln(IntToStr(getPixelShiftAverage(RuniqueChatLine, 50, 500)));
-  if  getPixelShiftAverage(RuniqueChatLine, 50, 500) > 0 then result := true;
+  FullClient:= GetClientBounds();
+  RuniqueChatLine:=  FullClient.split(FullClient.getWidth,round(FullClient.getHeight()/10));
+ // ETL_DrawBoxes(RuniqueChatLine,true);
+  Writeln(IntToStr(getPixelShiftAverage(RuniqueChatLine[9], 50, 500)));
+  if  getPixelShiftAverage(RuniqueChatLine[9], 50, 500) > 0 then result := true;
 
 end;
 

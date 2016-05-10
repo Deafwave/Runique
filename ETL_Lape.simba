@@ -1,0 +1,246 @@
+{$loadlib etl}
+{$IFNDEF Runique}
+const
+  clFuchsia = $FF00FF;
+  clWhite = 16777215;
+  clBlack = 0;
+  clAqua = $FFFF00;
+  clRed   = 255;
+  clGreen = 32768;
+  clBlue  = 16711680;
+  clLime = $00FF00;
+  clPurple = 8388736;
+  clYellow = 65535;
+{$ENDIF}
+
+ const cColorList_ETL:= [clYellow,clBlue,clLime,26367,clPurple,clAqua,clFuchsia,clGreen,clRed ]; // for debuging Boxes, ATPA
+
+procedure ETL_MoveToClient();
+var
+w,h,x,y : integer;
+begin
+   GetClientDimensions(w,h);
+   GetClientPosition(x,y);
+   wait(100);
+   etl_MoveWindow(x,y,w,h);
+end;
+
+procedure ETL_Start(Box:TBox);
+var x,y :integer;
+begin
+  if not etl_IsWindowOpened() then
+    etl_OpenWindow();
+  wait(300);
+  if (Box.x1=0) and (Box.y1=0) then
+    ETL_MoveToClient()
+  else begin
+   GetClientPosition(x,y);
+   etl_MoveWindow(x+Box.x1,y+Box.y1,Box.x2-Box.x1,Box.y2-Box.y1);
+  end;
+  wait(300);
+  etl_ClearLayer();
+
+end;
+
+procedure ETL_Start(); overload;
+begin
+  ETL_Start(IntToBox(0,0,0,0));
+end;
+
+procedure ETL_SetBmp ( bmp,x,y : integer);
+var
+tb : Tbitmap;
+tm : Tmufasabitmap;
+begin
+    tm := GetMufasaBitmap(bmp);
+    tb := tm.ToTBitmap;
+    etl_SetBitmap(tb.getBitmapHandle,x,y);
+    tb.Free;
+end;
+
+procedure ETL_DrawBmp ( bmp,x,y : integer);
+var
+tb : Tbitmap;
+tm : Tmufasabitmap;
+begin
+    if ( etl_IsMinimized() or (not etl_IsWindowOpened())) then exit;
+
+    tm := GetMufasaBitmap(bmp);
+    tb := tm.ToTBitmap;
+    etl_DrawBitmapTransp(tb.getBitmapHandle,x,y,0,false);
+    tb.Free;
+end;
+
+procedure ETL_DrawBmpTransp ( bmp,x,y,TranspCol : integer);
+var
+tb : Tbitmap;
+tm : Tmufasabitmap;
+begin
+    if ( etl_IsMinimized() or (not etl_IsWindowOpened())) then exit;
+
+    tm := GetMufasaBitmap(bmp);
+    tb := tm.ToTBitmap;
+    etl_DrawBitmapTransp(tb.getBitmapHandle,x,y,TranspCol,true);
+    tb.Free;
+end;
+
+procedure ETL_ClearArea(Area : TBox);
+var TCol : integer;
+begin
+  if ( etl_IsMinimized() or (not etl_IsWindowOpened())) then exit;
+  tcol := etl_GetTransparentCol;
+   etl_Rectangle(Area.x1,Area.y1,Area.x2,Area.y2,tcol,false);
+end;
+
+procedure ETL_DrawBoxes(TBA: TBoxArray; empty: boolean);
+var
+i,lCol,HTBA : integer;
+begin
+  if ( etl_IsMinimized() or (not etl_IsWindowOpened())) then exit;
+
+
+  lCol := Length(cColorList_ETL);
+  HTBA := Length(TBA)-1;
+
+  for i:=0 to HTBA do
+    etl_Rectangle(TBA[i].X1,TBA[i].Y1,TBA[i].X2,TBA[i].Y2,cColorList_ETL[i mod lCol],empty);
+end;
+
+procedure ETL_DrawBox(Box: TBox; color : integer; empty :boolean);
+begin
+  if ( etl_IsMinimized() or (not etl_IsWindowOpened())) then exit;
+
+  etl_Rectangle(Box.X1,Box.Y1,Box.X2,Box.Y2,color,empty);
+end;
+
+
+procedure ETL_DebugATPA(ATPA: T2DPointArray);
+var
+   i,h,w, len: Integer;
+  B: TBox;
+  MP: TPoint;
+  TPA,TPAedge,TPAtext: TPointArray;
+begin
+  if ( etl_IsMinimized() or (not etl_IsWindowOpened())) then exit;
+
+  len := Length(ATPA);
+  for i := 0 to len-1 do
+  begin
+    B := GetTPABounds(ATPA[i]);
+    //TPAedge:=FindTPAEdges(ATPA[i]);
+    TPAFromTextWrap(ToStr(i), SmallChars,w, h ,TPA);
+    OffsetTPA(TPA, Point(B.X1 + 1, B.Y1 + 1));
+    EdgeFromBoxWrap(B,TPAedge);
+    AppendTPA(ATPA[i],TPAedge);
+    AppendTPA(TPAText,TPA);
+    MP := MiddleBox(B);
+    TPA := [Point(MP.x - 1, MP.y), Point(MP.x + 1, MP.y), Point(MP.x, MP.y - 1), Point(MP.x, MP.y + 1), Point(MP.x - 2, MP.y), Point(MP.x, MP.y), Point(MP.x + 2, MP.y), Point(MP.x, MP.y - 2), Point(MP.x, MP.y + 2)];
+    AppendTPA(ATPA[i],TPA);
+  end;
+  etl_DrawATPA(ATPA,cColorList_ETL,false);
+  etl_DrawTPA(TPAtext,100,false);
+
+end;
+
+procedure ETL_DebugTPA(TPA: TPointArray; Color : integer);
+var
+  B: TBox;
+  MP: TPoint;
+  TPA1,TPAedge: TPointArray;
+begin
+  if ( etl_IsMinimized() or (not etl_IsWindowOpened())) then exit;
+  B := GetTPABounds(TPA);
+  EdgeFromBoxWrap(B,TPAedge);
+  AppendTPA(TPA,TPAedge);
+  MP := MiddleBox(B);
+  TPA1 := [Point(MP.x - 1, MP.y), Point(MP.x + 1, MP.y), Point(MP.x, MP.y - 1), Point(MP.x, MP.y + 1), Point(MP.x - 2, MP.y), Point(MP.x, MP.y), Point(MP.x + 2, MP.y), Point(MP.x, MP.y - 2), Point(MP.x, MP.y + 2)];
+  AppendTPA(TPA,TPA1);
+  ETL_DrawTPA(TPA,color,false);
+end;
+
+procedure ETL_DrawTextMultiEx(TSA: TStringArray; x,y :integer; Font: string; color: TColor; Shadow,Background:Boolean; BGcolor:TColor );
+var
+  i,w,h ,TPH: Integer;
+  TTP, SArr, FinalText, FinalShadow: TPointArray;
+
+begin
+  if ( etl_IsMinimized() or (not etl_IsWindowOpened())) then exit;
+
+  TPH := High(TSA);
+  for i := 0 to TPH do
+  begin
+    TPAFromTextWrap(TSA[i], Font, w,h,TTP);
+    OffsetTPA(TTP, Point(x, y + (i * (h+1))));
+    if Background then
+      etl_Rectangle(x,y+(i*h),x+w,y+h+(i * h),BGcolor,false);
+      CombineTPAWrap(TTP,FinalText,FinalText);
+    if Shadow then
+    begin
+      SArr := CopyTPA(TTP);
+      OffsetTPA(SArr, Point(1, 1));
+      ClearTPAFromTPAWrap(SArr, TTP, SArr);
+      CombineTPAWrap(SArr,FinalShadow,FinalShadow);
+    end;
+  end;
+
+  etl_DrawTPA(FinalText, color,false);
+  if Shadow then etl_DrawTPA(FinalShadow, 65536 , false);
+end;
+
+procedure ETL_DrawTextEx( x, y: Integer; font, Text: string; Color: TColor;Shadow :boolean);
+begin
+  ETL_DrawTextMultiEx( [Text], x, y, font, Color, Shadow ,FALSE ,0);
+end;
+
+procedure ETL_DrawTextBgEx( x, y: Integer; font, Text: string; Color ,BgColor: TColor; Shadow:boolean  );
+begin
+  ETL_DrawTextMultiEx( [Text],x, y, font, Color, Shadow ,TRUE ,BgColor);
+end;
+
+
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////  DebugBox  ////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+type ETL_TDebugBox = record
+  _MaxLines, _Color, _X, _Y, _Width, _Heigh:integer;
+  _font :string;
+  _Lines: TStringArray;
+end;
+
+procedure ETL_TDebugBox.Create(x,y,MaxLines,Color:integer = clRed; font:string = 'SmallChars');
+var
+  TPA:TpointArray;
+  w,h:integer;
+begin
+  _x := x;
+  _y := y;
+  _MaxLines := MaxLines;
+  _Color := Color;
+  _font := font;
+  SetLength(_Lines,MaxLines);
+  TPAFromTextWrap('I',font,w,h,TPA);
+  _Heigh := h*MaxLines+4;
+end;
+
+procedure ETL_TDebugBox.Push(msg:string);
+var
+  TPA:TpointArray;
+  w,h,i:integer;
+  temp:string;
+begin
+  TPAFromTextWrap(msg,_font,w,h,TPA);
+  if (w > _Width) then _Width := w ;
+  if (_Lines[0] = '') then _Lines[0] := msg
+  else
+  begin
+    for i:= _MaxLines-1 downto 1 do
+      _Lines[i] := _Lines[i-1];
+    _Lines[0] := msg
+  end;
+  ETL_ClearArea(IntToBox(_x,_y,_x+_Width,_y+_Heigh));
+  ETL_DrawTextMultiEx(_Lines,_x,_y,_font,_color,false,false,0);
+
+
+end;
+
+
