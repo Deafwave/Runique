@@ -57,7 +57,7 @@ begin
   end;
 
   end;
-  wait(randomrange(6500,7500));
+  wait(randomrange(3500,4500));
 end;
 
 

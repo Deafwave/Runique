@@ -1,12 +1,12 @@
 program RuniqueCannonballer;
 {$i ../RuniqueInclude.simba}
 var
-ResetLimit,clientbitmap,MinutesToUseBankCammand,Trips:integer;
+ResetLimit,SteelBarbmp,MinutesToUseBankCommand,Trips:integer;
 ItemSlotShop,SmithSlotNum:integer;
-ImmoOrGrandMaster:boolean;
+MinRuns:integer;
 procedure freeimages;
 begin
-     freebitmap(clientbitmap);
+     freebitmap(SteelBarbmp);
 end;
 
 procedure main;forward;
@@ -19,23 +19,23 @@ begin
   end;
   inc(ResetLimit);
   SendCommand('::market');
-  wait(5000);
+  wait(3000);
       if RuniqueBagFull then
       begin
-       openquickchat;
-       QuickChatArea(3,'sgs',point(47, 487),point(262, 477),point(170, 416));
        main;
       end else
           begin
           findswbank;
-           QuickChatArea(3,'sgs',point(47, 487),point(262, 477),point(170, 416));
           wait(500);
           main;
           end;
 end;
 procedure loadimages;
 begin
-        clientbitmap:=  bitmapFromClient(704, 271,714, 281);   //2nd slot
+		SteelBarbmp := BitmapFromString(11, 11, 'meJzLzy/Px0BdXVPh' +
+        'CL8spgI0WSDy8wuBI0xZyhWkp+fjUQCUxWMCRB' +
+        'aXArgs3JvICpBlgcjCwgaCICrRZBkZGACbJqe5');
+        //clientbitmap:=  bitmapFromClient(704, 271,714, 281);   //totally not 2nd slot
 end;
 
 Procedure Proggy(runs:integer);
@@ -51,32 +51,32 @@ End;
 
 Procedure  MakeCannonBalls;
 begin
-   if not RuniqueBagFull then
+if not RuniqueBagFull then
   begin
   OpenSummoningShop;
   buyitem(ItemSlotShop);
   end else
   begin
-  QuickChatArea(3,'soe',point(47, 487),point(259, 466),point(149, 416));
-  SmithEdg(clientbitmap,SmithSlotNum);
-  WaitBackPackChange(clientbitmap,10,100,500,0);
+  SmithEdg(SteelBarbmp,SmithSlotNum);
+  WaitBackPackChange(SteelBarbmp,10,100,500,0);
   inc(Trips);
   Proggy(Trips);
-  QuickChatArea(3,'sgs',point(47, 487),point(262, 477),point(170, 416));
-  BankingTimer(MinutesToUseBankCammand,ImmoOrGrandMaster);
+  BankingTimer(MinutesToUseBankCommand,MinRuns);
   end;
 end;
 procedure main;
 begin
  repeat
+  wait(500);
   MakeCannonBalls;
  until(false);
 end;
 begin
   SetupRuniqueinclude();
   addOnTerminate('freeimages');
-  ImmoOrGrandMaster:= true;
-  MinutesToUseBankCammand:= 4;  //anthing above 3.
+
+  MinRuns:= 25;
+  MinutesToUseBankCommand:= 9;
   ItemSlotShop:= 12;     //29    12
   SmithSlotNum:=  15;     //25   15
   loadimages;

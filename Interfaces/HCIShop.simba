@@ -1,0 +1,68 @@
+Function HCIOptionOpen:boolean;
+var
+Tpa: TPointArray;
+begin
+ if FindColorsTolerance(Tpa, 9409835, Runiquechatbox, 6, colorSetting(2, 0.09, 2.15)) then
+ result:= true;
+
+end;
+
+procedure OpenHCIShop(option:integer = 2);
+var
+Shopbox,Optionbox:tbox;
+x,y:integer;
+OptionBoxes:TboxArray;
+begin
+  QuickChatArea(3,'sov',point(47, 487),point(259, 466),point(149, 427));
+  Shopbox:=  intToBox(323, 110, 343, 122);  //minor fix
+  OptionBox:= intToBox(182, 422,349, 495);
+  OptionBoxes:= OptionBox.split(OptionBox.getWidth,round(OptionBox.getHeight/5));
+  RightClickTpa(intToBox(323, 110, 343, 122),3367024,1,0,0,0.73,0.65);//
+  RSPSChooseOption('Trade');
+  WaitFunc(@HCIOptionOpen,600,6000);
+  if not HCIOptionOpen then
+  begin
+    QuickChatArea(3,'sov',point(47, 487),point(259, 466),point(149, 427));
+    ClickShop(Shopbox);
+    WaitFunc(@HCIOptionOpen,600,3000);
+    if not HCIOptionOpen then begin  writeln('Error didnt open options for correct shop'); terminatescript; end;
+  end;
+  begin
+    case  option of
+      1:begin
+        mouse( OptionBoxes[0].getmiddle,MOUSE_LEFT,MOUSE_ACCURATE); //General Store
+        end;
+      2:begin
+        mouse( OptionBoxes[1].getmiddle,MOUSE_LEFT,MOUSE_ACCURATE); //Melee Store
+        end;
+      3:begin
+        mouse(OptionBoxes[2].getmiddle,MOUSE_LEFT,MOUSE_ACCURATE); //Ranged Store
+        end;
+      4:begin
+        mouse(OptionBoxes[3].getmiddle,MOUSE_LEFT,MOUSE_ACCURATE); //Magic Store
+        end;
+      5:begin
+        mouse(OptionBoxes[4].getmiddle,MOUSE_LEFT,MOUSE_ACCURATE); //Next Page
+        wait(randomrange(500,750));
+        mouse(OptionBoxes[0].getmiddle,MOUSE_LEFT,MOUSE_ACCURATE); //Skilling Store(1)
+        end;
+      6:begin
+        mouse(OptionBoxes[4].getmiddle,MOUSE_LEFT,MOUSE_ACCURATE); //Next Page
+        wait(randomrange(500,750));
+        mouse(OptionBoxes[1].getmiddle,MOUSE_LEFT,MOUSE_ACCURATE); //Skilling Store(2)
+        end;
+      7:begin
+        mouse(OptionBoxes[4].getmiddle,MOUSE_LEFT,MOUSE_ACCURATE); //Next Page
+        wait(randomrange(500,750));
+        mouse(OptionBoxes[2].getmiddle,MOUSE_LEFT,MOUSE_ACCURATE); //Summoning Store(1)
+        end;
+      8:begin
+        mouse(OptionBoxes[4].getmiddle,MOUSE_LEFT,MOUSE_ACCURATE); //Next Page
+        wait(randomrange(500,750));
+        mouse(OptionBoxes[3].getmiddle,MOUSE_LEFT,MOUSE_ACCURATE); //Summoning Store(2)
+        end;
+    end;
+  end;
+   WaitFunc(@ShopIsOpen,1000,10000);
+   if not ShopIsOpen then begin  writeln('Error Couldnt open shop'); terminatescript; end;
+end;

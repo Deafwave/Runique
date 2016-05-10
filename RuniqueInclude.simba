@@ -1,7 +1,4 @@
 {$DEFINE Runique}
-
-
-
 //all from srl-6
 {$include_once utilities/wrappers.simba}
 {$include_once utilities/time.simba}
@@ -13,7 +10,6 @@
 {$include_once utilities/pixelshift.simba}
 {$include_once utilities/types/types.simba}
 {$include_once utilities/color.simba}
-// {$i ../ETL_Lape.simba}  //remove
 //end srl-6
 var
  ScriptTimer: TTimeMarker;
@@ -26,12 +22,15 @@ var
 {$include_once interfaces/bank.simba}
 {$include_once interfaces/MiniMap.simba}
 {$include_once interfaces/Shops.simba}
+{$include_once interfaces/HCIShop.simba}
 {$include_once core/combat.simba}
 {$include_once interfaces/Backpack.simba}
+{$include_once interfaces/Combine.simba}
 {$include_once skills/RuniqueSmithing.simba}
 {$include_once skills/RuniqueSummoning.simba}
 {$include_once skills/RuniqueThieving.simba}
 {$include_once skills/RuniqueHerblore.simba}
+
 
 procedure Loadall;
 begin
@@ -48,7 +47,6 @@ FreeSmithingImages;
 end;
 procedure SetupRuniqueinclude();
 begin
-  //ETL_Start();//delete
   MouseSpeed:= 30;
   RuniqueBackPack:= intToBox(555, 260,731, 511);
   RuniqueBankscreen:= intTobox(28, 123,468, 314);
@@ -63,6 +61,3 @@ begin
   WaitRSPSClientReady;
   ScriptTimer.start;
 end;
-
-
-

@@ -35,12 +35,10 @@ var
   Atpa: T2DPointArray;
   Colorbox:Tbox;
 begin
-  wait(300);
   if FindColorsTolerance(Tpa, color, box, tol, colorSetting(2, hue, sat)) then
   begin
     Atpa := ClusterTPA(Tpa, cluster);
     SortAtpaSize(Atpa, True);
-    wait(500);
     mouse(Atpa[picktpa].getBounds().getmiddle,MOUSE_RIGHT);//fix
   end
   else
