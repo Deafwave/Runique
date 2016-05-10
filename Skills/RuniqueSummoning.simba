@@ -13,15 +13,19 @@ Shopbox,Optionbox:tbox;
 x,y:integer;
 OptionBoxes:TboxArray;
 begin
-   mousebox(RuniqueBackPack,MOUSE_MOVE);
    Shopbox:=  intToBox(248, 175,262, 190);  //minor fix
    OptionBox:= intToBox(182, 432,349, 489);
    OptionBoxes:= OptionBox.split(OptionBox.getWidth,round(OptionBox.getHeight/2));
    wait(1100+Randomrange(850,1200)); //lagg protec for right menu.
-   ClickShop(Shopbox);
-  // RightClickTpa(intToBox(251, 156,261, 175),9151138,1,0,0,0.73,0.65);//
-  // RSPSChooseOption('Trade');
+   RightClickTpa(intToBox(251, 156,261, 175),9151138,1,0,0,0.73,0.65);//
+   RSPSChooseOption('Trade');
    WaitFunc(@SummoningOptionOpen,600,3000);
+   if not SummoningOptionOpen then
+   begin
+   ClickShop(Shopbox);
+   WaitFunc(@SummoningOptionOpen,600,3000);
+   if not SummoningOptionOpen then begin  writeln('Error didnt open options for correct shop'); terminatescript; end;
+   end;
        if option = 1 then   //for which supplies
        begin
           mouse( OptionBoxes[0].getmiddle,MOUSE_LEFT,MOUSE_ACCURATE);
