@@ -76,10 +76,10 @@ end;
 begin
   SetupRuniqueinclude();
   addOnTerminate('freeimages');
-  ImmoOrGrandMaster:= false;
+  ImmoOrGrandMaster:= true;
   MinutesToUseBankCammand:= 4;  //anthing above 3.
-  ItemSlotShop:= 29;     //12
-  SmithSlotNum:=  25;     //15
+  ItemSlotShop:= 12;     //29
+  SmithSlotNum:=  15;     //25
   loadimages;
   wait(600);
   main;
