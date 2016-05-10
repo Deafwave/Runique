@@ -35,8 +35,16 @@ begin
 end;
 
 procedure DepositAll;
+var
+DepositAllbox:tbox;
 begin
-     if BankIsOpen then clickbitmap(bankdeposit, 25, Runiquemainscreen);
+  DepositAllbox:= intTobox(338, 336,372, 360);
+     if BankIsOpen then
+      begin
+        wait(300 + random(600));
+        mouse(DepositAllbox.getmiddle,MOUSE_LEFT)
+        wait(300 + random(600));
+      end;
 end;
 
 procedure WithdrawItemsFromBank(Bankslot:integer = 1;MouseBtn:integer = MOUSE_LEFT);
