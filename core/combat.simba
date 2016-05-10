@@ -11,9 +11,9 @@ var
   DocBox: tbox;
   midpoint: tpoint;
 begin
-  DocBox := intTobox(81, 369, 128, 386);
+  DocBox := intTobox(8, 259, 29, 297);
   midpoint := DocBox.getMiddle;
-  QuickChatArea(2,'ce',point(45, 464),point(154, 477));
+  SendCommand('::home');
   wait(8000);
   mouse(midpoint, MOUSE_RIGHT, MOUSE_ACCURATE);
   RSPSChooseOption('Heal');

@@ -7,8 +7,8 @@ begin
   FullClient:= GetClientBounds();
   RuniqueChatLine:=  FullClient.split(FullClient.getWidth,round(FullClient.getHeight()/10));
  // ETL_DrawBoxes(RuniqueChatLine,true);
-  Writeln(IntToStr(getPixelShiftAverage(RuniqueChatLine[9], 50, 500)));
-  if  getPixelShiftAverage(RuniqueChatLine[9], 50, 500) > 0 then result := true;
+  Writeln(IntToStr(getPixelShiftAverage(RuniqueChatLine[9], 30, 300)));
+  if  getPixelShiftAverage(RuniqueChatLine[9], 30, 300) > 0 then result := true;
 
 end;
 
@@ -17,7 +17,7 @@ var
 min:integer;
 begin
 min:= 60000;
- waitFunc(@RuniqueClientReady,1000,60000);
+ waitFunc(@RuniqueClientReady,300,60000);
   if  RuniqueClientReady then
     begin
     Writeln('Client Ready');//forgot comma

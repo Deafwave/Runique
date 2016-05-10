@@ -51,7 +51,7 @@ begin
       writeln('Item not click due to lagg/dc');
       TerminateScript;
     end;
-   RightClickTpa( intToBox(252, 176,271, 188),5132117,1,0,0,2.39,0.73);
+   RightClickTpa( intToBox(251, 152,277, 167),5132117,1,0,0,2.39,0.73);
    waitfunc(@FindBlueAnvilText,300,2500);
    if FindBlueAnvilText then begin
    clickbitmap(UseAnvil,65,Runiquemainscreen);

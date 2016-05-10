@@ -24,8 +24,13 @@ end;
 procedure Closebank;
 var
 i:integer;
+closetbox:tbox;
 begin
-  if BankIsOpen then clickbitmap(bankclose, 25, Runiquemainscreen);
+  closetbox:= intTobox(485, 65,498, 82);
+  if BankIsOpen then
+  begin
+      mouse(closetbox.getmiddle,MOUSE_LEFT,MOUSE_HUMAN);
+  end;
   waitfunc(@BankIsClosed,300,1300);
   if BankIsOpen then
     begin
@@ -101,7 +106,7 @@ begin
     if Closebank then
     begin
     QuickChatArea(2,'ms',point(45, 479),point(159, 476));
-    wait(7000);
+    wait(6200);
     end;
   repeat
   RightClickTpa(Runiquemainscreen, 9211288, 27, 50,0, 0.06, 0.07);
