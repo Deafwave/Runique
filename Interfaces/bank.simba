@@ -42,7 +42,7 @@ begin
      if BankIsOpen then
       begin
         wait(300 + random(600));
-        mouse(DepositAllbox.getmiddle,MOUSE_LEFT)
+        mouse(DepositAllbox.getmiddle,MOUSE_LEFT);
         wait(300 + random(600));
       end;
 end;
