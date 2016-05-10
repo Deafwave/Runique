@@ -13,7 +13,7 @@ Shopbox,Optionbox:tbox;
 x,y:integer;
 OptionBoxes:TboxArray;
 begin
-   mouse(point(128, 128),MOUSE_MOVE);
+   mousebox(RuniqueBackPack,MOUSE_MOVE);
    Shopbox:=  intToBox(248, 175,262, 190);  //minor fix
    OptionBox:= intToBox(182, 432,349, 489);
    OptionBoxes:= OptionBox.split(OptionBox.getWidth,round(OptionBox.getHeight/2));
