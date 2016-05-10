@@ -75,7 +75,7 @@ end;
 begin
   SetupRuniqueinclude();
   addOnTerminate('freeimages');
-  ImmoOrGrandMaster:= false;
+  ImmoOrGrandMaster:= true;
   MinutesToUseBankCammand:= 4;  //anthing above 3.
   ItemSlotShop:= 12;     //29    12
   SmithSlotNum:=  15;     //25   15
