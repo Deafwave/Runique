@@ -51,16 +51,19 @@ begin
       writeln('Item not click due to lagg/dc');
       TerminateScript;
     end;
-   RightClickTpa( intToBox(251, 152,277, 167),5132117,1,0,0,2.39,0.73);
+   RightClickTpa( intToBox(251, 152,277, 164),5132117,1,0,0,2.39,0.73);
    waitfunc(@FindBlueAnvilText,300,2500);
    if FindBlueAnvilText then begin
    clickbitmap(UseAnvil,65,Runiquemainscreen);
    end else
    begin
        QuickChatArea(3,'soe',point(47, 487),point(259, 466),point(149, 416));
-       wait(8000 + random(1200));
+       wait(6000 + random(1200));
        mouse(point(661, 234),MOUSE_LEFT);
-       RightClickTpa( intToBox(254, 151,278, 169),5132117,1,0,0,2.39,0.73);
+       wait(300);
+       clickbitmap(BarBtm,25,RuniqueBackPack);
+        wait(300);
+       RightClickTpa( intToBox(251, 152,277, 164),5132117,1,0,0,2.39,0.73);
        waitfunc(@FindBlueAnvilText,300,2500);
        if FindBlueAnvilText then
        begin
