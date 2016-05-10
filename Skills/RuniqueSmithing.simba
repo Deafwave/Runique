@@ -60,6 +60,7 @@ begin
    begin
        QuickChatArea(3,'soe',point(47, 487),point(259, 466),point(149, 416));
        wait(8000 + random(1200));
+       mouse(point(661, 234),MOUSE_MOVE);
        RightClickTpa( intToBox(252, 176,271, 188),5132117,1,0,0,2.39,0.73);
        waitfunc(@FindBlueAnvilText,300,2500);
        if FindBlueAnvilText then
