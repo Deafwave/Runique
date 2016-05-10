@@ -44,6 +44,7 @@ end;
 
 procedure SmithEdg(BarBtm,Item2Smith:integer);
 begin
+   mouse(point(128, 128),MOUSE_MOVE);
    clickbitmap(BarBtm,25,RuniqueBackPack);
    waitfunc(@ItemActivate,300,3000);
     if  not ItemActivate then
