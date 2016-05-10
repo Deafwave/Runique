@@ -17,7 +17,7 @@ end;
 
 function BankIsClosed:boolean;
 begin
-    if not findBitmapToleranceIn(bankopen, x, y, Runiquemainscreen, 10) then
+    if not BankIsOpen then
     result:= true;
 end;
 

@@ -1,5 +1,5 @@
 var
-  bankopen,bankdeposit,RunsTillBank,TotalItems,Totalbtms,bankclose,x, y,Maxhp: integer;
+  RunsTillBank,TotalItems,Totalbtms,x, y,Maxhp: integer;
   RuniqueBackPackSlots,RuniqueShopBoxes,RuniqueBankScreenSlot:TboxArray;
   RuniqueSlot: array [1..28] of tbox;
   RuniqueBackPack,RuniqueShop,RuniqueBankscreen,Runiquechatbox:tbox;
@@ -13,9 +13,6 @@ const
 
 procedure Runiqueimages;
 begin
-  bankopen := BitmapFromString(123, 9, 'meJytVltOxDAQ6016iJUAiU+EtI' + 'AECD652N52GTFay/I8kras8jGdeDyOk6a7Xq7r5bosy/oXnJ5e787' + 'v6y3JeR4VoM9LI86jaqbL49sXpkQYxEdOLolxpS2K8cA0DDlTAyVv' + 'ARvOcWqFxOJhJEkbRbdtiplTST4c2Rg+1JxqO4KplLPh1aanbty/f' + 'O4WltbyGTDA/LZGYdVRnDFnZl0cy4s2aWBfi1+1qGY3N+0+zOETW1' + 'U1V0rKP2l4YybfMJs2KxrY82OYeLeCDZcdNBL05alqI1KR3gW9Yhc' + 'xnFVVhgOWnrpUj2iLnjjn8JOBAYWMwYr4ET+5LWV2ONXHTp6+TdU5' + 'YTewnMjTLEoE9zEy0tqYJ32InxtXLnlMPZw/7Gj5lcgYP3IYp9sfC' + 'Y85A2e2lkRJsuoGeVy8cMpbs5WZX2E8cjkyXOuB93JmWyxiDDwaEv' + 'w7SkSS3GMN8rh4wcte72Nm/PP3TzXlwxl8pGAGROR/lcDtIfK4eMG' + 'nhs8z/wJsPuSN');
-  bankdeposit := BitmapFromString(16, 12, 'meJx1kTsKwlAQRVt/ASGCCIkKNo' + 'KVoiCIjaiFRtBSDFgERLC1sbHQ0gW4AheQBbg3j1wYQqIwDPMm594' + '385J3fac185YXojY5E5Xejrq9v3lR3Ng8crVeseQstofhPOiOp+XO' + 'Ou/6ZMHV0al/fRFfhyimI9h4dxAVmkMkFDDchXP4fCMBpp/lTQJMZ' + 'gBGAuZIQU7Nwwwm4UiBBEx7iQ/Co3i+yk0qCmnVZ98sr2Wxqq/uAI' + 'TGoEnnHy+YTNjbcqne8yefJDWYPb7tKx4fw6gJRjLnLI+VJCL1REk' + '4668fwXZ0IG2MFP8B7LyEIA==');
-  bankclose := BitmapFromString(12, 9, 'meJx1zlsLgjAYgOH7/QAvAiGlgoT' + 'OEnQUKUuUjlIJg4gg6P//gl77YIyg8Vxt77bPcX3nK7k+NuUzLjTC' + 'KFVKjVaZqHlNtxEg1S9QVs06s5t6qyPIJMAw3toN+/DaXUEQHcqfd' + '2QM+MEANMvjrb9I7IYZ8vvbTIv57iLNLD9jnO6rx08lOBJ8FIRTu2' + 'HH4HpvEhMwmGmg/i9Ok0LjA5/NSGU=');
   Maxhp:=  bitmapFromClient(728, 81,744, 87);
 end;
 
@@ -23,5 +20,5 @@ end;
 
 procedure FreeRuniqueimages;
 begin
-  freebitmaps([bankopen, bankdeposit, bankclose,MaxHp]);
+  freebitmap(MaxHp);
 end;
