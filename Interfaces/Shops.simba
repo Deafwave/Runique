@@ -10,7 +10,7 @@ function DidfindInterfaceTxt:boolean;
 var
 Textbox:tbox;
 begin
-    Textbox:= intToBox(188, 64,319, 80);
+    Textbox:= intToBox(180, 63,315, 82);
     if Textbox.colorExists(4231423) then
     result:= true;
 end;
@@ -28,9 +28,8 @@ end;
 
 procedure ClickShop(shopbox:tbox);
 begin
-     wait(250+randomrange(450,800));
-     mouseBox(shopbox,MOUSE_RIGHT);
-     wait(150);
+     wait(850+randomrange(450,800));
+     mouse(shopbox.getmiddle(),MOUSE_RIGHT);
      RSPSchooseoption('Trade');
 end;
 

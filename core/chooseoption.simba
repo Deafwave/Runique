@@ -35,7 +35,7 @@ if waitfunc(@IsChooseOptionopen,300,3000) then
         rspsOption:= bounds.split(bounds.getWidth,15);
         for i:= Low(rspsOption) to  High(rspsOption) do
         begin
-         if StringMatch(getTextAtEx(rspsOption[i], 0,5,3,textcolor, 0, 'Upchars07') , option)  > 0.84 then
+         if StringMatch(getTextAtEx(rspsOption[i], 0,5,3,textcolor, 0, 'Upchars07') , option)  > 0.86 then
            begin
              result:= rspsOption[i];
              OptionCorrectNotCorrect:= false;

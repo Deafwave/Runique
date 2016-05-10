@@ -7,11 +7,12 @@
 ///////////////////////////////////////////////////////////////////////
 
 function BankIsOpen:boolean;
+var
+Textbox:tbox;
 begin
-
-if findBitmapToleranceIn(bankopen, x, y, Runiquemainscreen, 25) then //fix
-result:= true;
-
+    Textbox:= intToBox(188, 64,319, 80);
+    if Textbox.colorExists(2070783) then
+    result:= true;
 end;
 
 function BankIsClosed:boolean;
@@ -46,6 +47,8 @@ begin
               if findColorSpiral(x, y, 65536, RuniqueBankScreenSlot[Bankslot-1])   then
               begin
               mouse(point(x,y),MOUSE_LEFT, MOUSE_ACCURATE);
+              wait(1200);
+              Closebank;
               wait(500);
               end;
               end;
@@ -54,6 +57,8 @@ begin
               begin
               mouse(point(x,y),MOUSE_RIGHT, MOUSE_ACCURATE);
               RSPSChooseoption('Withdraw all but one');
+              wait(1200);
+              Closebank;
               wait(500);
               end;
               end;
@@ -66,6 +71,7 @@ begin
   SendCommand('::bank');
   waitfunc(@BankIsOpen,300,3000);
   if BankIsOpen then begin
+  wait(500);
   DepositAll;
   if WithDrawItem then
     begin
@@ -95,12 +101,15 @@ begin
   waitfunc(@BankIsOpen,300,3000);
   if BankIsOpen then
   begin
-  if Closebank then DepositAll;
+  if Closebank then
+     begin
+     DepositAll;
+     wait(1500);
+     end;
   if WithDrawItem then
     begin
       WithdrawItemsFromBank();
     end;
-  if CloseBank then Closebank;
   end else
   begin
    writeln('Bank failed to open');
@@ -109,29 +118,36 @@ begin
 
 end;
 
-procedure BankingTimer(MinsTobank:integer = 9);
+procedure BankingTimer(MinsTobank:integer = 9; GmOrImm:boolean = false);
 var
-  Timetilbank:integer;
+  Timetilbank,min,MinsRuning:integer;
 begin
-       inc(RunsTillBank);
-       Writeln('Banking mins set to ',MinsTobank,' banking in ',6 - RunsTillBank, ' Current run ',RunsTillBank);
-       if RunsTillBank >=  6 then
-       begin
-       if MinsTobank > 6 then
-       begin
-         findswbank;
-         openquickchat;
-         SendKeys('sgs', 250, 50);
-         wait(9000);
-         RunsTillBank:= 0;
-       end else
-       begin
-       Commandbank;
-       RunsTillBank:= 0;
-       end;
-       end;
+       min:= 60000;
+       MinsRuning:= round(ScriptTimer.getTime() / min);
+       Writeln('Banking mins set to ',MinsTobank,' banking in ',round(MinsTobank - MinsRuning));
 
+       if  (MinsRuning >= MinsTobank) then
+         begin
+           if  GmOrImm  then
+             begin
+               Commandbank;
+               ScriptTimer.pause;
+               ScriptTimer.reset;
+               ScriptTimer.start;
+             end else
+             begin
+               findswbank;
+               wait(600 + randomrange(200, 600));
+               openquickchat;
+               SendKeys('sgs', 250, 50);
+               wait(9000 + randomrange(800,1300));
+               ScriptTimer.pause;
+               ScriptTimer.reset;
+               ScriptTimer.start;
+             end;
+          end;
 end;
+
 
 procedure DepositAllOfSingleItem(slot:integer);
 begin

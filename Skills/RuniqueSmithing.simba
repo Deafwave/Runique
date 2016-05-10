@@ -51,11 +51,10 @@ begin
       writeln('Item not click due to lagg/dc');
       TerminateScript;
     end;
-   wait(300 + randomrange(100,400));
-   RightClickTpa( intToBox(252, 176,274, 193),5197909,4,0,0,0.70,0.15);//
+   RightClickTpa( intToBox(252, 176,274, 193),5132117,1,0,0,2.39,0.73);
    waitfunc(@FindBlueAnvilText,300,2500);
    if FindBlueAnvilText then begin
-   clickbitmap(UseAnvil,55,Runiquemainscreen);
+   clickbitmap(UseAnvil,65,Runiquemainscreen);
    end else
    begin
        writeln('Couldnt find anvil');
@@ -71,8 +70,6 @@ begin
         'XEtXq8jkqxbiZCrTkTzu8kV5ThpdBsfPT0BBObO95uzuOs7bWV1x+' +
         'qP+5HzyTbnXDfM5Zyaw+Md+O8+x4zgR9iiX4oQrjWjmNK6PvexEEu' +
         'gDBJku6A==');
-
-
 
 end;
 procedure FreeSmithingImages;

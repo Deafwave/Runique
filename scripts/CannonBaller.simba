@@ -3,6 +3,7 @@ program RuniqueCannonballer;
 var
 ResetLimit,clientbitmap,MinutesToUseBankCammand,Trips:integer;
 ItemSlotShop,SmithSlotNum:integer;
+ImmoOrGrandMaster:boolean;
 procedure freeimages;
 begin
      freebitmap(clientbitmap);
@@ -62,21 +63,24 @@ begin
   inc(Trips);
   Proggy(Trips);
   QuickChatArea(3,'sgs',point(47, 487),point(262, 477),point(170, 416));
-  BankingTimer(MinutesToUseBankCammand);
+  BankingTimer(MinutesToUseBankCammand,ImmoOrGrandMaster);
   end;
 end;
 procedure main;
 begin
  repeat
+  wait(500);
   MakeCannonBalls;
  until(false);
 end;
 begin
   SetupRuniqueinclude();
   addOnTerminate('freeimages');
-  MinutesToUseBankCammand:= 9;
-  ItemSlotShop:= 12;
-  SmithSlotNum:=  15;
+  ImmoOrGrandMaster:= false;
+  MinutesToUseBankCammand:= 4;  //anthing above 3.
+  ItemSlotShop:= 29;     //12
+  SmithSlotNum:=  25;     //15
   loadimages;
+  wait(600);
   main;
 end;

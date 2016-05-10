@@ -149,7 +149,7 @@ P:=1;
      if (CountBitmapsInInvo(btms,tol) = BtmsLeft) then exit;
      if  InCombat(true) then
        begin
-       findswbank(false,0,true);
+       findswbank;
        exit;
        end;
      until(i = repeats);
