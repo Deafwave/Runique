@@ -131,6 +131,7 @@ begin
            if  GmOrImm  then
              begin
                Commandbank;
+               wait(300 + random(600));
                ScriptTimer.pause;
                ScriptTimer.reset;
                ScriptTimer.start;
