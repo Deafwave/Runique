@@ -22,6 +22,8 @@ begin
    WaitFunc(@SummoningOptionOpen,600,3000);
    if not SummoningOptionOpen then
    begin
+   QuickChatArea(3,'sgs',point(47, 487),point(262, 477),point(170, 416));
+   wait(12000);
    ClickShop(Shopbox);
    WaitFunc(@SummoningOptionOpen,600,3000);
    if not SummoningOptionOpen then begin  writeln('Error didnt open options for correct shop'); terminatescript; end;

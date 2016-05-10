@@ -58,8 +58,16 @@ begin
    clickbitmap(UseAnvil,65,Runiquemainscreen);
    end else
    begin
-       writeln('Couldnt find anvil');
+       QuickChatArea(3,'soe',point(47, 487),point(259, 466),point(149, 416));
+       wait(12000);
+       if FindBlueAnvilText then
+       begin
+       clickbitmap(UseAnvil,65,Runiquemainscreen);
+       end else
+       begin
+       writeln('Couldnt find anvil after 2 trys');
        terminatescript;
+       end;
    end;
    SmithItem(Item2Smith);
 end;
