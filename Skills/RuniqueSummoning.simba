@@ -4,7 +4,6 @@ Tpa: TPointArray;
 begin
  if FindColorsTolerance(Tpa, 9409835, Runiquechatbox, 6, colorSetting(2, 0.09, 2.15)) then
  result:= true;
-
 end;
 
 procedure OpenSummoningShop(option:integer = 2);
@@ -12,25 +11,33 @@ var
 Shopbox,Optionbox:tbox;
 x,y:integer;
 OptionBoxes:TboxArray;
+i:integer = 0;
 begin
-  QuickChatArea(3,'sgs',point(47, 487),point(262, 477),point(170, 416));
   Shopbox:=  intToBox(248, 175,262, 190);  //minor fix
   OptionBox:= intToBox(182, 432,349, 489);
   OptionBoxes:= OptionBox.split(OptionBox.getWidth,round(OptionBox.getHeight/2));
+  repeat
+  QuickChatArea(3,'sgs',point(47, 487),point(262, 477),point(170, 416));
   ClickShop(Shopbox);
+  WaitFunc(@SummoningOptionOpen,300,2500);
+  inc(i);
   if not SummoningOptionOpen then
   begin
-    QuickChatArea(3,'sgs',point(47, 487),point(262, 477),point(170, 416));
-    ClickShop(Shopbox);
-    if not SummoningOptionOpen then begin  writeln('Error didnt open options for correct shop'); terminatescript; end;
+    mouse(point(661, 234),MOUSE_MOVE,MOUSE_HUMAN);
   end;
-       if option = 1 then   //for which supplies
-       begin
-          mouse( OptionBoxes[0].getmiddle,MOUSE_LEFT,MOUSE_ACCURATE);
-       end else
-       begin
-          mouse( OptionBoxes[1].getmiddle,MOUSE_LEFT,MOUSE_ACCURATE);
-       end;
+  until (SummoningOptionOpen) or (i >= 50);
+  if (i >= 50) then //If looped with no success, terminate
+  begin
+    writeln('Error didnt open options for correct shop');
+    terminatescript;
+  end;
+  if option = 1 then   //for which supplies
+  begin
+    mouse( OptionBoxes[0].getmiddle,MOUSE_LEFT,MOUSE_ACCURATE);
+  end else
+  begin
+    mouse( OptionBoxes[1].getmiddle,MOUSE_LEFT,MOUSE_ACCURATE);
+  end;
    WaitFunc(@ShopIsOpen,1000,5000);
    if not ShopIsOpen then begin  writeln('Error Couldnt open shop'); terminatescript; end;
 

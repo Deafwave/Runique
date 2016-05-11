@@ -40,37 +40,36 @@ end;
 
 
 procedure SmithEdg(BarBtm,Item2Smith:integer);
+var
+i:integer = 0;
 begin
   QuickChatArea(3,'soe',point(47, 487),point(259, 466),point(149, 416));
+  repeat
   clickbitmap(BarBtm,25,RuniqueBackPack);
   waitfunc(@ItemActivate,300,3000);
-    if  not ItemActivate then
-    begin
-      writeln('Item not click due to lagg/dc');
-      TerminateScript;
-    end;
-   RightClickTpa( intToBox(252, 176,271, 188),5132117,1,0,0,2.39,0.73);
-   waitfunc(@FindBlueAnvilText,300,2500);
-   if FindBlueAnvilText then begin
-   clickbitmap(UseAnvil,65,Runiquemainscreen);
-   end else
-   begin
-       QuickChatArea(3,'soe',point(47, 487),point(259, 466),point(149, 416));
-       mouse(point(661, 234),MOUSE_LEFT);
-       clickbitmap(BarBtm,25,RuniqueBackPack);
-       waitfunc(@ItemActivate,300,3000);
-       RightClickTpa( intToBox(252, 176,271, 188),5132117,1,0,0,2.39,0.73);
-       waitfunc(@FindBlueAnvilText,300,2500);
-       if FindBlueAnvilText then
-       begin
-       clickbitmap(UseAnvil,65,Runiquemainscreen);
-       end else
-       begin
-       writeln('Couldnt find anvil after 2 trys');
-       terminatescript;
-       end;
-   end;
-   SmithItem(Item2Smith);
+  inc(i);
+  until (ItemActivate) or (i >= 50);
+  if (i >= 50) then
+  begin
+    writeln('Item not click due to lagg/dc');
+    TerminateScript;
+  end;
+  repeat
+  RightClickTpa( intToBox(252, 176,271, 188),5132117,1,0,0,2.39,0.73);
+  waitfunc(@FindBlueAnvilText,300,2500);
+  inc(i);
+  if not FindBlueAnvilText then
+  begin
+    mouse(point(661, 234),MOUSE_MOVE);
+  end;
+  until (FindBlueAnvilText) or (i >= 50);
+  if (i >= 50) then
+  begin
+    writeln('Couldnt find anvil');
+    terminatescript;
+  end;
+  clickbitmap(UseAnvil,65,Runiquemainscreen);
+  SmithItem(Item2Smith);
 end;
 
 procedure LoadSmithingImages;

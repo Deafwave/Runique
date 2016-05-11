@@ -28,9 +28,9 @@ end;
 
 procedure ClickShop(shopbox:tbox);
 begin
-     wait(randomrange(250,400));
      mouse(shopbox.getmiddle(),MOUSE_RIGHT,MOUSE_ACCURATE);
      RSPSchooseoption('Trade');
+     wait(randomrange(500,750));
 end;
 
 

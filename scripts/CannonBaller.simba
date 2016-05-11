@@ -5,6 +5,9 @@ var
 ResetLimit,SteelBarbmp,MinutesToUseBankCommand,Trips:integer;
 ItemSlotShop,SmithSlotNum:integer;
 MinRuns:integer;
+myForm:eZForm;
+myCheckbox,myButton:eZElement;
+StartScript:integer;
 procedure freeimages;
 begin
      freebitmap(SteelBarbmp);
@@ -65,12 +68,6 @@ if not RuniqueBagFull then
   end;
 end;
 
-
-var
-  myForm:eZForm;
-  myCheckbox,myButton:eZElement;
-  StartScript:integer;
-
 procedure pButtonHandler();native;
 begin
 StartScript:= 1;
@@ -79,19 +76,19 @@ end;
 procedure Createform;
 begin
   myForm.create('Script Settings');
-  myForm.addLabel('Minutes to bank in','b s08','',[10,10]);
-  myForm.addMemo('5','','',[10,30],[230,20],nil).prop('maxlength',2);
-  myCheckbox:= myForm.addCheckbox('Immor or GrandMaster','b s08','',[10,50],nil);
-  myButton:= myForm.addButton('Run Script','b s08','',[10,70],[230,95],pButtonHandler);
+  myForm.addLabel('Minutes for bank command cooldown','b s08','',[10,10]);
+  myForm.addMemo('9','','',[10,30],[230,20],nil).prop('maxlength',2);
+  myForm.addLabel('Runs before banking','b s08','',[10,60]);
+  myForm.addMemo('25','','',[10,80],[230,20],nil).prop('maxlength',2);
+  myButton := myForm.addButton('Run Script','b s08','',[10,110],[230,95],pButtonHandler);
   myForm.show();
   repeat
-     if myForm.find('checkbox')[0].checked() then ImmoOrGrandMaster:= true;
-     if not myForm.find('checkbox')[0].checked() then  ImmoOrGrandMaster:= false;
-     MinutesToUseBankCammand:= StrToInt(myForm.find('Memo')[0].value);
+     MinutesToUseBankCommand := StrToInt(myForm.find('Memo')[1].value);
+     MinRuns := StrToInt(myForm.find('Memo')[0].value);
      wait(1);
   until (StartScript = 1);
   eZFormFree();
-  writeln('GrandMaster or gm ',ImmoOrGrandMaster,' Banking timer set to ',MinutesToUseBankCammand);
+  writeln('Banking timer set to ',MinutesToUseBankCommand,' Minimum runs before banking set to ',MinRuns);
 end;
 
 procedure main;
