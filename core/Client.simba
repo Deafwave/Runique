@@ -7,8 +7,8 @@ begin
   FullClient:= GetClientBounds();
   RuniqueChatLine:=  FullClient.split(FullClient.getWidth,round(FullClient.getHeight()/10));
  // ETL_DrawBoxes(RuniqueChatLine,true);
-  Writeln(IntToStr(getPixelShiftAverage(RuniqueChatLine[9], 30, 300)));
-  if  getPixelShiftAverage(RuniqueChatLine[9], 30, 300) > 0 then result := true;
+  Writeln(IntToStr(getPixelShiftAverage(RuniqueChatLine[9], 50, 150)));
+  if  getPixelShiftAverage(RuniqueChatLine[9], 50, 150) > 0 then result := true;
 
 end;
 

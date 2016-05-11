@@ -129,7 +129,7 @@ begin
  if BitmapinSlot(i,btm,tol)  = true then  inc(Totalbtms);
  inc(i);
  until(i = 29);
- //writeln(tostr(Totalbtms));
+ writeln(tostr(Totalbtms));
  result:= Totalbtms;
 
 end;
@@ -165,6 +165,7 @@ P:=1;
                     end;
             end;
  until((CountBitmapsInInvo(btms,tol) = BtmsLeft));
+ wait(350);
 end
 
 

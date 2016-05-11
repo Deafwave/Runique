@@ -15,4 +15,5 @@ end;
 procedure RuniqueWaitFlag;
 begin
   waitFunc(@RuniqueFlagNotPresent, 50, 10000);
+  wait(2700);
 end;

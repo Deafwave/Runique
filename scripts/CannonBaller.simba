@@ -1,12 +1,13 @@
 program RuniqueCannonballer;
 {$i ../RuniqueInclude.simba}
+{$i ../eZForm.simba}
 var
-ResetLimit,SteelBarbmp,MinutesToUseBankCommand,Trips:integer;
+ResetLimit,clientbitmap,MinutesToUseBankCammand,Trips:integer;
 ItemSlotShop,SmithSlotNum:integer;
-MinRuns:integer;
+ImmoOrGrandMaster:boolean;
 procedure freeimages;
 begin
-     freebitmap(SteelBarbmp);
+     freebitmap(clientbitmap);
 end;
 
 procedure main;forward;
@@ -19,23 +20,23 @@ begin
   end;
   inc(ResetLimit);
   SendCommand('::market');
-  wait(3000);
+  wait(5000);
       if RuniqueBagFull then
       begin
+       openquickchat;
+       QuickChatArea(3,'sgs',point(47, 487),point(262, 477),point(170, 416));
        main;
       end else
           begin
           findswbank;
+           QuickChatArea(3,'sgs',point(47, 487),point(262, 477),point(170, 416));
           wait(500);
           main;
           end;
 end;
 procedure loadimages;
 begin
-		SteelBarbmp := BitmapFromString(11, 11, 'meJzLzy/Px0BdXVPh' +
-        'CL8spgI0WSDy8wuBI0xZyhWkp+fjUQCUxWMCRB' +
-        'aXArgs3JvICpBlgcjCwgaCICrRZBkZGACbJqe5');
-        //clientbitmap:=  bitmapFromClient(704, 271,714, 281);   //totally not 2nd slot
+        clientbitmap:=  bitmapFromClient(704, 271,714, 281);   //2nd slot
 end;
 
 Procedure Proggy(runs:integer);
@@ -51,35 +52,66 @@ End;
 
 Procedure  MakeCannonBalls;
 begin
-if not RuniqueBagFull then
+   if not RuniqueBagFull then
   begin
   OpenSummoningShop;
   buyitem(ItemSlotShop);
   end else
   begin
-  SmithEdg(SteelBarbmp,SmithSlotNum);
-  WaitBackPackChange(SteelBarbmp,10,100,500,0);
+  QuickChatArea(3,'soe',point(47, 487),point(259, 466),point(149, 416));
+  SmithEdg(clientbitmap,SmithSlotNum);
+  WaitBackPackChange(clientbitmap,10,100,500,0);
   inc(Trips);
   Proggy(Trips);
-  BankingTimer(MinutesToUseBankCommand,MinRuns);
+  QuickChatArea(3,'sgs',point(47, 487),point(262, 477),point(170, 416));
+  BankingTimer(MinutesToUseBankCammand,ImmoOrGrandMaster);
   end;
 end;
+
+
+var
+  myForm:eZForm;
+  myCheckbox,myButton:eZElement;
+  StartScript:integer;
+
+procedure pButtonHandler();native;
+begin
+StartScript:= 1;
+end;
+
+procedure Createform;
+begin
+  myForm.create('Script Settings');
+  myForm.addLabel('Minutes to bank in','b s08','',[10,10]);
+  myForm.addMemo('5','','',[10,30],[230,20],nil).prop('maxlength',2);
+  myCheckbox:= myForm.addCheckbox('Immor or GrandMaster','b s08','',[10,50],nil);
+  myButton:= myForm.addButton('Run Script','b s08','',[10,70],[230,95],pButtonHandler);
+  myForm.show();
+  repeat
+     if myForm.find('checkbox')[0].checked() then ImmoOrGrandMaster:= true;
+     if not myForm.find('checkbox')[0].checked() then  ImmoOrGrandMaster:= false;
+     MinutesToUseBankCammand:= StrToInt(myForm.find('Memo')[0].value);
+     wait(1);
+  until (StartScript = 1);
+  eZFormFree();
+  writeln('GrandMaster or gm ',ImmoOrGrandMaster,' Banking timer set to ',MinutesToUseBankCammand);
+end;
+
 procedure main;
 begin
  repeat
-  wait(500);
   MakeCannonBalls;
  until(false);
 end;
 begin
+  Createform;
   SetupRuniqueinclude();
   addOnTerminate('freeimages');
-
-  MinRuns:= 25;
-  MinutesToUseBankCommand:= 9;
-  ItemSlotShop:= 12;     //29    12
+  ItemSlotShop:=  12;     //29    12
   SmithSlotNum:=  15;     //25   15
   loadimages;
-  wait(600);
+  wait(350);
   main;
+
+
 end;

@@ -39,25 +39,25 @@ begin
   case numbofkeys of
   2:begin
      mouse(p1, MOUSE_LEFT,MOUSE_ACCURATE);
-     wait(300);
+     wait(550);
      mouse(p2, MOUSE_LEFT,MOUSE_ACCURATE);
-     wait(300);
+     wait(550);
     end;
 
   3:begin
      mouse(p1, MOUSE_LEFT,MOUSE_ACCURATE);
-     wait(300);
+     wait(550);
      mouse(p2, MOUSE_LEFT,MOUSE_ACCURATE);
-     wait(300);
+     wait(550);
      mouse(p3, MOUSE_LEFT,MOUSE_ACCURATE);
-     wait(300);
+     wait(550);
 
     end;
 
   end;
 
   end;
-  wait(randomrange(3500,4500));
+  wait(randomrange(5500,6500));
 end;
 
 

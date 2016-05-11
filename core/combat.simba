@@ -14,7 +14,7 @@ begin
   DocBox := intTobox(8, 259, 29, 297);
   midpoint := DocBox.getMiddle;
   SendCommand('::home');
-  wait(3000);
+  wait(8000);
   mouse(midpoint, MOUSE_RIGHT, MOUSE_ACCURATE);
   RSPSChooseOption('Heal');
   RuniqueWaitFlag;
@@ -23,7 +23,8 @@ end;
 procedure escape();
 begin
     SendCommand('::market');
-    wait(3000);
+    wait(8000);
+    wait(1000);
     heal;
     wait(500);
 end;
@@ -48,3 +49,6 @@ begin
     result := true;
     end;
 end;
+
+
+
