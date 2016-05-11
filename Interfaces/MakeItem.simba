@@ -6,20 +6,28 @@
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
 
-function FindMakeText:boolean;
+Function MakeMenuOpen:boolean;
+var
+Tpa: TPointArray;
 begin
-    if intToBox(476, 404, 496, 424).colorExists(9277980) then
-    result:= true;
+ if FindColorsTolerance(Tpa, 9409835, Runiquechatbox, 6, colorSetting(2, 0.09, 2.15)) then
+ result:= true;
 end;
 
-procedure MakeItems(ItemNumber = 1,MaxItems:integer);
+procedure MakeItems(ItemType:integer);
 begin
-  if FindMakeText then begin
-   mouse(point(264, 454),MOUSE_RIGHT, MOUSE_ACCURATE);
-   RSPSChooseOption('Make All');
-   end else
-   begin
-     writeln('Could not combine items');
-     terminatescript;
-   end;
- end;
+  WaitFunc(@MakeMenuOpen,300,3000);
+  if MakeMenuOpen then
+  begin
+    case  ItemType of
+    1:begin
+      mouse(point(264, 454),MOUSE_RIGHT, MOUSE_ACCURATE);
+      end;
+    //end else
+    //begin
+    //  writeln('Could not combine items');
+    //  terminatescript;
+    end;
+    RSPSChooseOption('Make All');
+  end;
+end;

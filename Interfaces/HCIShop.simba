@@ -4,7 +4,6 @@ Tpa: TPointArray;
 begin
  if FindColorsTolerance(Tpa, 9409835, Runiquechatbox, 6, colorSetting(2, 0.09, 2.15)) then
  result:= true;
-
 end;
 
 procedure OpenHCIShop(option:integer);

@@ -4,6 +4,7 @@ var
 ResetLimit,clientbitmap1,clientbitmap2,MinutesToUseBankCommand,Trips:integer;
 ItemSlotShop,SmithSlotNum:integer;
 MinRuns:integer;
+ItemType:integer;
 procedure FreeImages;
 begin
      freebitmap(clientbitmap1);
@@ -36,7 +37,7 @@ begin
   writeln('|---------------------------------------------------------|');
   writeln('||================Runique GemCutter ===================|');
   writeln('           Time Running: '+ MsToTime(GetTimeRunning, 3));
-  writeln('           Rough Combines Made ' + inttostr(runs * 104 + 4));
+  writeln('           Rough Combines Made ' + inttostr(runs * 26));
   writeln('||=======================================================||');
   writeln('|---------------------------------------------------------|');
 end;
@@ -51,8 +52,8 @@ if not RuniqueBagFull then
   begin
   if BitmapinSlot(28,clientbitmap2,5) and BitmapinSlot(1,clientbitmap1,5) then
   begin
-  //CombineItems(clientbitmap1,clientbitmap2);
   UseItemOnItem(1,28,250);
+  MakeItems(ItemType);
   WaitBackPackChange(clientbitmap2,10,100,500,0);
   NoteUnnoteItem(4);
   inc(Trips);
@@ -77,6 +78,7 @@ begin
   MinutesToUseBankCommand:= 0;
   ItemSlotShop:= 17;  //12 = Opal, 13 = Jade, 14 = Red Topaz, 15 = Sapphire,
                       //16 = Emerald, 17 = Ruby, 18 = Diamond
+  ItemType := 1;      //1 = Gems, 2 = ...Future Use
   loadimages;
   main;
 end;
