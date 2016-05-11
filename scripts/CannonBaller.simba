@@ -103,8 +103,8 @@ begin
   SetupRuniqueinclude();
   addOnTerminate('freeimages');
 
-  MinRuns:= 25;
-  MinutesToUseBankCommand:= 9;
+  //MinRuns:= 25;
+  //MinutesToUseBankCommand:= 9;
   ItemSlotShop:= 12;     //29    12
   SmithSlotNum:=  15;     //25   15
   loadimages;
