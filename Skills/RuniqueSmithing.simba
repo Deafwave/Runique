@@ -20,8 +20,6 @@ begin
     end;
 end;
 
-
-
 procedure SmithItem(SmithItemSlot:integer);
 begin
 WaitFunc(@SmithingIsOpen,150,3000);
@@ -32,7 +30,6 @@ if  not SmithingIsOpen then
   wait(randomrange(300,600));
   mouse(RuniqueSmithItemSlot[SmithItemSlot-1].getmiddle(),MOUSE_RIGHT,MOUSE_ACCURATE);
   RSPSChooseOption('Make All');
-
 end;
 
 function FindBlueAnvilText:boolean;
@@ -44,26 +41,25 @@ end;
 
 procedure SmithEdg(BarBtm,Item2Smith:integer);
 begin
-   clickbitmap(BarBtm,25,RuniqueBackPack);
-   waitfunc(@ItemActivate,300,3000);
+  QuickChatArea(3,'soe',point(47, 487),point(259, 466),point(149, 416));
+  clickbitmap(BarBtm,25,RuniqueBackPack);
+  waitfunc(@ItemActivate,300,3000);
     if  not ItemActivate then
     begin
       writeln('Item not click due to lagg/dc');
       TerminateScript;
     end;
-   RightClickTpa( intToBox(251, 152,277, 164),5132117,1,0,0,2.39,0.73);
+   RightClickTpa( intToBox(252, 176,271, 188),5132117,1,0,0,2.39,0.73);
    waitfunc(@FindBlueAnvilText,300,2500);
    if FindBlueAnvilText then begin
    clickbitmap(UseAnvil,65,Runiquemainscreen);
    end else
    begin
        QuickChatArea(3,'soe',point(47, 487),point(259, 466),point(149, 416));
-       wait(6000 + random(1200));
        mouse(point(661, 234),MOUSE_LEFT);
-       wait(300);
        clickbitmap(BarBtm,25,RuniqueBackPack);
-        wait(300);
-       RightClickTpa( intToBox(251, 152,277, 164),5132117,1,0,0,2.39,0.73);
+       waitfunc(@ItemActivate,300,3000);
+       RightClickTpa( intToBox(252, 176,271, 188),5132117,1,0,0,2.39,0.73);
        waitfunc(@FindBlueAnvilText,300,2500);
        if FindBlueAnvilText then
        begin
@@ -89,7 +85,4 @@ end;
 procedure FreeSmithingImages;
 begin
     Freebitmap(UseAnvil);
-
 end;
-
-

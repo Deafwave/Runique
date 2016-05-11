@@ -9,8 +9,8 @@
 
 procedure SettingUPBackPackSlots;
 begin
-  RuniqueBackPackSlots:= RuniqueBackPack.split(45,36);
-  RuniqueSlot[1] := RuniqueBackPackSlots[0];
+RuniqueBackPackSlots:= RuniqueBackPack.split(45,36);
+RuniqueSlot[1] := RuniqueBackPackSlots[0];
 RuniqueSlot[2] := RuniqueBackPackSlots[1];
 RuniqueSlot[3] := RuniqueBackPackSlots[2];
 RuniqueSlot[4] := RuniqueBackPackSlots[3];
@@ -38,7 +38,6 @@ RuniqueSlot[25] := RuniqueBackPackSlots[24];
 RuniqueSlot[26] := RuniqueBackPackSlots[25];
 RuniqueSlot[27] := RuniqueBackPackSlots[26];
 RuniqueSlot[28] := RuniqueBackPackSlots[27];
-
 end;
 
 
@@ -129,7 +128,7 @@ begin
  if BitmapinSlot(i,btm,tol)  = true then  inc(Totalbtms);
  inc(i);
  until(i = 29);
- writeln(tostr(Totalbtms));
+ //writeln(tostr(Totalbtms));
  result:= Totalbtms;
 
 end;
@@ -165,7 +164,6 @@ P:=1;
                     end;
             end;
  until((CountBitmapsInInvo(btms,tol) = BtmsLeft));
- wait(350);
 end
 
 

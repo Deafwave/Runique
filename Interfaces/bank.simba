@@ -5,6 +5,8 @@
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
+var
+UseBankChest:integer;
 
 function BankIsOpen:boolean;
 var
@@ -60,9 +62,8 @@ begin
               if findColorSpiral(x, y, 65536, RuniqueBankScreenSlot[Bankslot-1])   then
               begin
               mouse(point(x,y),MOUSE_LEFT, MOUSE_ACCURATE);
-              wait(1200);
+              wait(300);
               Closebank;
-              wait(500);
               end;
               end;
    MOUSE_RIGHT:begin
@@ -70,9 +71,8 @@ begin
               begin
               mouse(point(x,y),MOUSE_RIGHT, MOUSE_ACCURATE);
               RSPSChooseoption('Withdraw all but one');
-              wait(1200);
+			  wait(300);
               Closebank;
-              wait(500);
               end;
               end;
 
@@ -84,7 +84,6 @@ begin
   SendCommand('::bank');
   waitfunc(@BankIsOpen,300,3000);
   if BankIsOpen then begin
-  wait(500);
   DepositAll;
   if WithDrawItem then
     begin
@@ -106,7 +105,7 @@ begin
     if Closebank then
     begin
     QuickChatArea(2,'ms',point(45, 479),point(159, 476));
-    wait(6200);
+    wait(3000);
     end;
   repeat
   RightClickTpa(Runiquemainscreen, 9211288, 27, 50,0, 0.06, 0.07);
@@ -117,7 +116,6 @@ begin
   if Closebank then
      begin
      DepositAll;
-     wait(1500);
      end;
   if WithDrawItem then
     begin
@@ -131,40 +129,76 @@ begin
 
 end;
 
-procedure BankingTimer(MinsTobank:integer = 9; GmOrImm:boolean = false);
+procedure BankingTimer(MinsTobank:integer = 9; MinRuns:integer = 6);
 var
   Timetilbank,min,MinsRuning:integer;
 begin
-       min:= 60000;
-       MinsRuning:= round(ScriptTimer.getTime() / min);
-       Writeln('Banking mins set to ',MinsTobank,' banking in ',round(MinsTobank - MinsRuning));
+  inc(RunsTillBank);
+  min:= 60000;
+  MinsRuning:= round(ScriptTimer.getTime() / min);
+  Writeln('Banking mins set to ',MinsTobank,' banking in ',MinRuns - RunsTillBank, ' Current run ',RunsTillBank);
+  //Writeln('Banking mins set to ',MinsTobank,' banking in ',round(MinsTobank - MinsRuning));
 
-       if  (MinsRuning >= MinsTobank) then
-         begin
-           if  GmOrImm  then
-             begin
-               Commandbank;
-               wait(300 + random(600));
-               ScriptTimer.pause;
-               ScriptTimer.reset;
-               ScriptTimer.start;
-             end else
-             begin
-               findswbank;
-               wait(600 + randomrange(200, 600));
-               openquickchat;
-               SendKeys('sgs', 250, 50);
-               wait(9000 + randomrange(800,1300));
-               ScriptTimer.pause;
-               ScriptTimer.reset;
-               ScriptTimer.start;
-             end;
-          end;
+  if  (RunsTillBank >= MinRuns) then
+  begin
+    if  MinsRuning >= MinsToBank and MinsToBank <> 0  then
+    begin
+      Commandbank;
+      ScriptTimer.pause;
+      ScriptTimer.reset;
+      ScriptTimer.start;
+      RunsTillBank:= 0;
+    end else
+    begin
+      findswbank;
+      RunsTillBank:= 0;
+    end;
+  end;
 end;
-
 
 procedure DepositAllOfSingleItem(slot:integer);
 begin
-   mouse(RuniqueSlot[slot].getmiddle,MOUSE_RIGHT,MOUSE_ACCURATE);
-   RSPSChooseoption('Store All');
+  mouse(RuniqueSlot[slot].getmiddle,MOUSE_RIGHT,MOUSE_ACCURATE);
+  RSPSChooseoption('Store All');
+end;
+
+function FindBlueBankText:boolean;
+begin
+    if intToBox(4, 47, 524, 386).colorExists(16776960) then
+    result:= true;
+end;
+procedure LoadBankImages;
+begin
+        UseBankChest := BitmapFromString(69, 6, 'meJydVEEOwCAI22fm2f9/zpmQmEo' +
+        'L4gwH00lphTnGMyBs9f7OQNwQBzI+l8NlYk4VlVYpbYYDlwuuFeGs' +
+        'PLoTZltfc6pcEvA0Po/8sjt8RuZKL8wcyWYZiSRrDdrZ95qnWCsaj' +
+        '4qdhIrup+1du7Zzu5eOfthxk7nspBb8f4Tp+bAd98WnoDLnkR6zgC' +
+        '4+oLvXIg==');
+
+end;
+procedure FreeBankImages;
+begin
+    Freebitmap(UseBankChest);
+end;
+
+procedure NoteUnnoteItem(slot:integer);
+var
+  midpoint: tpoint;
+  x, y: integer;
+begin
+  LoadBankImages;
+  Addonterminate('FreeBankImages');
+  QuickChatArea(2,'ms',point(45, 479),point(159, 476));
+  mouse(RuniqueSlot[slot].getmiddle,MOUSE_RIGHT,MOUSE_ACCURATE);
+  RSPSChooseoption('Use');
+  RightClickTpa(intToBox(287, 104, 320, 133), 9211288, 27, 50,0, 0.06, 0.07);
+  waitfunc(@FindBlueBankText,300,2500);
+  if FindBlueBankText then begin
+    //writeln('BlueBankText Found');
+    clickbitmap(UseBankChest,95,Runiquemainscreen);
+    wait(1500);
+  end else
+  begin
+    writeln('No blue bank chest bmp found');
+  end;
 end;
