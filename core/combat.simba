@@ -11,10 +11,10 @@ var
   DocBox: tbox;
   midpoint: tpoint;
 begin
-  DocBox := intTobox(8, 259, 29, 297);
+  DocBox := intTobox(98, 237, 126, 267);
   midpoint := DocBox.getMiddle;
   SendCommand('::home');
-  wait(3000);
+  wait(7000);
   mouse(midpoint, MOUSE_RIGHT, MOUSE_ACCURATE);
   RSPSChooseOption('Heal');
   RuniqueWaitFlag;
